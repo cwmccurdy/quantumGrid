@@ -49,8 +49,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'scatterGrid'
-copyright = "2020, Zachary Louis Streeter"
-author = "Zachary Louis Streeter"
+copyright = "2020, Zachary Streeter"
+author = "Zachary Streeter"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -136,7 +136,7 @@ latex_elements = {
 latex_documents = [
     (master_doc, 'scattergrid.tex',
      'scatterGrid Documentation',
-     'Zachary Louis Streeter', 'manual'),
+     'Zachary Streeter', 'manual'),
 ]
 
 

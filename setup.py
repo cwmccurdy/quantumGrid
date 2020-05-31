@@ -17,7 +17,7 @@ setup_requirements = ['pytest-runner', ]
 test_requirements = ['pytest>=3', ]
 
 setup(
-    author="Zachary Louis Streeter",
+    author="Zachary Streeter",
     author_email='zlstreeter@lbl.gov',
     python_requires='>=3.5',
     classifiers=[

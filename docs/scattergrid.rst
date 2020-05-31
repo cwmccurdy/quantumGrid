@@ -12,10 +12,10 @@ scattergrid.cli module
    :undoc-members:
    :show-inheritance:
 
-scattergrid.scatterGrid module
+scattergrid.scattergrid module
 ------------------------------
 
-.. automodule:: scattergrid.scatterGrid
+.. automodule:: scattergrid.scattergrid
    :members:
    :undoc-members:
    :show-inheritance:

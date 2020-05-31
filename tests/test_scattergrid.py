@@ -18,6 +18,7 @@ def response():
     """
     # import requests
     # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
+    scattergrid.scattergrid.hello_world()
 
 
 def test_content(response):
