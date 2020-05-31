@@ -6,7 +6,7 @@ import pytest
 
 from click.testing import CliRunner
 
-from scattergrid.scattergrid import scatterGrid
+from scattergrid import scattergrid
 from scattergrid import cli
 
 
