@@ -27,7 +27,7 @@ import time as timeclock  # for timing parts of the calculation
 from sympy.integrals.quadrature import gauss_lobatto
 
 
-class scattergrid(object):
+class scatterGrid(object):
 
     def __init__(self, n_order, FEM_boundaries, Mass=1, Complex_scale=1, R0_scale=0.0):
         #
