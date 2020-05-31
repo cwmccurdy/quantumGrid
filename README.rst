@@ -23,6 +23,10 @@ brought to you by the AMO theory group at Berkeley National Lab
         :target: https://scattergrid-doc.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
+.. image:: https://pyup.io/repos/github/zstreeter/scattergrid/shield.svg
+     :target: https://pyup.io/repos/github/zstreeter/scattergrid/
+     :alt: Updates
+
 Table of Contents
 =================
 

@@ -12,9 +12,9 @@ with open('HISTORY.rst') as history_file:
 
 requirements = ['Click>=7.0', ]
 
-setup_requirements = [ ]
+setup_requirements = ['pytest-runner', ]
 
-test_requirements = [ ]
+test_requirements = ['pytest>=3', ]
 
 setup(
     author="Zachary Streeter",
@@ -31,7 +31,8 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
-    description="Exterior Complex Scaled Finite-Element Method Discrete Variable Representation grid for general physics problems.",
+    description="Exterior Complex Scaled Finite-Element Element Discrete \
+                 Variable Representation grid for general physics problems.",
     entry_points={
         'console_scripts': [
             'scattergrid=scattergrid.cli:main',
