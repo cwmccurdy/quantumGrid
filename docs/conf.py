@@ -17,12 +17,10 @@
 # relative to the documentation root, use os.path.abspath to make it
 # absolute, like shown here.
 #
-from scattergrid import scattergrid
-import sphinx_rtd_theme
+import scattergrid
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
-
 
 # -- General configuration ---------------------------------------------
 
@@ -32,8 +30,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode',
-              "sphinx_rtd_theme"]
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -85,10 +82,6 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-extensions = [
-    "sphinx_rtd_theme",
-]
-
 html_theme = "sphinx_rtd_theme"
 # html_theme = 'alabaster'
 
