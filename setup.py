@@ -12,9 +12,9 @@ with open('HISTORY.rst') as history_file:
 
 requirements = ['Click>=7.0', ]
 
-setup_requirements = [ ]
+setup_requirements = []
 
-test_requirements = [ ]
+test_requirements = []
 
 setup(
     author="Zachary Streeter",
@@ -43,7 +43,8 @@ setup(
     include_package_data=True,
     keywords='scattergrid',
     name='scattergrid',
-    packages=find_packages(include=['scattergrid', 'scattergrid.*']),
+    packages=find_packages(include=['scattergrid',
+                                    'scattergrid.*', 'matplotlib', 'sympy']),
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
