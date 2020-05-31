@@ -16,13 +16,12 @@ brought to you by the AMO theory group at Berkeley National Lab
 .. image:: https://img.shields.io/pypi/v/scattergrid.svg
         :target: https://pypi.python.org/pypi/scattergrid
 
-.. image:: https://img.shields.io/travis/zstreeter/scattergrid.svg
-        :target: https://travis-ci.com/zstreeter/scattergrid
+.. image:: https://travis-ci.com/zstreeter/scatterGrid.svg?branch=master
+    :target: https://travis-ci.com/zstreeter/scatterGrid
 
 .. image:: https://readthedocs.org/projects/scattergrid-doc/badge/?version=latest
         :target: https://scattergrid-doc.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
-
 
 .. image:: https://pyup.io/repos/github/zstreeter/scattergrid/shield.svg
      :target: https://pyup.io/repos/github/zstreeter/scattergrid/
