@@ -9,6 +9,6 @@ numpy==1.18.4
 pyparsing==2.4.7
 python-dateutil==2.8.1
 scipy==1.4.1
-six @ file:///home/conda/feedstock_root/build_artifacts/six_1590081179328/work
+six==1.15.0
 sympy @ file:///Users/runner/miniforge3/conda-bld/sympy_1590335526477/work
 tornado==6.0.4
