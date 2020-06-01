@@ -20,7 +20,7 @@
 import scattergrid
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..','../scattergrid/'))
+sys.path.insert(0, os.path.abspath('../scattergrid/'))
 
 # -- General configuration ---------------------------------------------
 
