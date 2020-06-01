@@ -1,3 +1,0 @@
-numpy==1.18.4
-sympy==1.6
-matplotlib==3.2.1
