@@ -5,7 +5,7 @@ gmpy2==2.1.0b1
 kiwisolver==1.2.0
 matplotlib==3.2.1
 mpmath==1.1.0
-numpy @ file:///Users/runner/miniforge3/conda-bld/numpy_1588605105042/work
+numpy==1.18.4
 pyparsing==2.4.7
 python-dateutil==2.8.1
 scipy==1.4.1
