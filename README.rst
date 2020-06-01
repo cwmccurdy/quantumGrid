@@ -19,8 +19,8 @@ brought to you by the AMO theory group at Berkeley National Lab
 .. image:: https://travis-ci.com/zstreeter/scatterGrid.svg?branch=master
     :target: https://travis-ci.com/zstreeter/scatterGrid
 
-.. image:: https://readthedocs.org/projects/scattergrid-doc/badge/?version=latest
-        :target: https://scattergrid-doc.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/scattergrid/badge/?version=latest
+        :target: https://scattergrid.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
 .. image:: https://pyup.io/repos/github/zstreeter/scatterGrid/shield.svg
