@@ -117,6 +117,14 @@ Giuseppe Barbalinardo💻
 
 .. raw:: html
 
+   <td align="center">
+   <a href="https://chemistry.ucdavis.edu/people/william-mccurdy">
+   <img src="docs/_static/Bills_pic.jpg" width="100px;" alt=""/>
+
+Willaim (Bill) McCurdy 💻 🚧 📖
+
+.. raw:: html
+
    </table>
 
 This project follows the

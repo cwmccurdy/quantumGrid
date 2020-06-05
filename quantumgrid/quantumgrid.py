@@ -30,16 +30,16 @@ from sympy.integrals.quadrature import gauss_lobatto
 class scatterGrid(object):
 
     def __init__(self, n_order, FEM_boundaries, Mass=1, Complex_scale=1, R0_scale=0.0):
-        #
-        #  Builds 1D  FEM DVR grid and kinetic energy matrix representation in
-        #  normalized FEM DVR basis of shape functions and bridging functions
-        #  Finite elements of any sizes determined by FEM_boundaries array, but
-        #  all with same order DVR
-        #
-        #  Returns dimension of the basis, the points and weights and the Kinetic Energy matrix
-        #
-        #   Complex scaling starts at grid boundary closest to R0 if Complex_scale .ne. 1
-        #
+        """
+          Builds 1D  FEM DVR grid and kinetic energy matrix representation in
+          normalized FEM DVR basis of shape functions and bridging functions
+          Finite elements of any sizes determined by FEM_boundaries array, but
+          all with same order DVR
+
+          Returns dimension of the basis, the points and weights and the Kinetic Energy matrix
+
+          Complex scaling starts at grid boundary closest to R0 if Complex_scale .ne. 1
+        """
         self.n_order = n_order
         self.FEM_boundaries = FEM_boundaries
         N_elements = len(FEM_boundaries) - 1
