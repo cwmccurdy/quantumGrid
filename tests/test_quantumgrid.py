@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
-"""Tests for `scattergrid` package."""
+"""Tests for `quantumgrid` package."""
 
 import pytest
 
 from click.testing import CliRunner
 
-from scattergrid import scattergrid
-from scattergrid import cli
+from quantumgrid import quantumgrid
+from quantumgrid import cli
 
 
 @pytest.fixture
@@ -31,7 +31,7 @@ def test_command_line_interface():
     runner = CliRunner()
     result = runner.invoke(cli.main)
     assert result.exit_code == 0
-    assert 'scattergrid.cli.main' in result.output
+    assert 'quantumgrid.cli.main' in result.output
     help_result = runner.invoke(cli.main, ['--help'])
     assert help_result.exit_code == 0
     assert '--help  Show this message and exit.' in help_result.output

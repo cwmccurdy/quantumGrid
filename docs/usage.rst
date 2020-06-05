@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use scatterGrid in a project::
+To use quantumGrid in a project::
 
-    import scattergrid
+    import quantumgrid

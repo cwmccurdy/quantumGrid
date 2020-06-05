@@ -1,7 +1,7 @@
-scattergrid
+quantumgrid
 ===========
 
 .. toctree::
    :maxdepth: 4
 
-   scattergrid
+   quantumgrid

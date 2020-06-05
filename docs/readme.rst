@@ -2,7 +2,7 @@ About
 =====
 TODO: Go into details!!!
 
-scatterGrid is a package for solving a 1-D Schrdinger equation for an
+quantumGrid is a package for solving a 1-D Schrdinger equation for an
 arbitrary potential.
 
 Motivation

@@ -1,7 +1,7 @@
 .. raw:: html
 
    <h1 align="center">
-     💥scatterGrid💥
+     💥quantumGrid💥
    </h1>
 
 .. raw:: html

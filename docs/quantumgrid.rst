@@ -1,21 +1,21 @@
-scattergrid package
+quantumgrid package
 ===================
 
 Submodules
 ----------
 
-scattergrid.cli module
+quantumgrid.cli module
 ----------------------
 
-.. automodule:: scattergrid.cli
+.. automodule:: quantumgrid.cli
    :members:
    :undoc-members:
    :show-inheritance:
 
-scattergrid.scattergrid module
+quantumgrid.quantumgrid module
 ------------------------------
 
-.. automodule:: scattergrid.scattergrid
+.. automodule:: quantumgrid.quantumgrid
    :members:
    :undoc-members:
    :show-inheritance:
@@ -24,7 +24,7 @@ scattergrid.scattergrid module
 Module contents
 ---------------
 
-.. automodule:: scattergrid
+.. automodule:: quantumgrid
    :members:
    :undoc-members:
    :show-inheritance:
