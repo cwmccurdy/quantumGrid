@@ -89,6 +89,18 @@ key <https://allcontributors.org/docs/en/emoji-key>`__):
 
 .. raw:: html
 
+   </tr>
+
+.. raw:: html
+
+   <td align="center">
+   <a href="https://chemistry.ucdavis.edu/people/william-mccurdy">
+   <img src="docs/_static/Bills_pic.jpg" width="100px;" alt=""/>
+
+Willaim (Bill) McCurdy 💻 🚧 📖
+
+.. raw:: html
+
    <td align="center">
    <a href="https://www.linkedin.com/in/zachary-streeter-44a323102/">
    <img src="https://avatars0.githubusercontent.com/u/15461329?v=4" width="100px;" alt=""/>
@@ -110,18 +122,6 @@ Giuseppe Barbalinardo💻
 .. raw:: html
 
    </td>
-
-.. raw:: html
-
-   </tr>
-
-.. raw:: html
-
-   <td align="center">
-   <a href="https://chemistry.ucdavis.edu/people/william-mccurdy">
-   <img src="docs/_static/Bills_pic.jpg" width="100px;" alt=""/>
-
-Willaim (Bill) McCurdy 💻 🚧 📖
 
 .. raw:: html
 
