@@ -1,7 +1,7 @@
 .. raw:: html
 
    <h1 align="center">
-     💥scatterGrid💥
+     💥quantumGrid💥
    </h1>
 
 .. raw:: html
@@ -13,22 +13,22 @@
 brought to you by the AMO theory group at Berkeley National Lab
 
 
-.. image:: https://img.shields.io/pypi/v/scattergrid.svg
-        :target: https://pypi.python.org/pypi/scattergrid
+.. image:: https://img.shields.io/pypi/v/quantumgrid.svg
+        :target: https://pypi.python.org/pypi/quantumgrid
 
-.. image:: https://travis-ci.com/zstreeter/scatterGrid.svg?branch=master
-    :target: https://travis-ci.com/zstreeter/scatterGrid
+.. image:: https://travis-ci.com/zstreeter/quantumgrid.svg?branch=master
+    :target: https://travis-ci.com/zstreeter/quantumGrid
 
-.. image:: https://readthedocs.org/projects/scattergrid/badge/?version=latest
-        :target: https://scattergrid.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/quantumgrid/badge/?version=latest
+        :target: https://quantumgrid.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/zstreeter/scatterGrid/shield.svg
-     :target: https://pyup.io/repos/github/zstreeter/scatterGrid/
+.. image:: https://pyup.io/repos/github/zstreeter/quantumGrid/shield.svg
+     :target: https://pyup.io/repos/github/zstreeter/quantumGrid/
      :alt: Updates
 
-.. image:: https://pyup.io/repos/github/zstreeter/scatterGrid/python-3-shield.svg
-     :target: https://pyup.io/repos/github/zstreeter/scatterGrid/
+.. image:: https://pyup.io/repos/github/zstreeter/quantumGrid/python-3-shield.svg
+     :target: https://pyup.io/repos/github/zstreeter/quantumGrid/
      :alt: Python 3
 
 Table of Contents
@@ -45,7 +45,7 @@ About
 =====
 
 Exterior Complex Scaled Finite-Element Element Discrete Variable Representation grid for general physics problems.
-scatterGrid is a package for solving a 1-D Schrodinger equation for an
+quantumGrid is a package for solving a 1-D Schrodinger equation for an
 arbitrary potential.
 
 Motivation
@@ -71,7 +71,7 @@ This package offers a few toy problems out of the box.
 
 Documentation
 ==============
-https://scattergrid.readthedocs.io.
+https://quantumgrid.readthedocs.io.
 
 Contributors ✨
 ===============
