@@ -18,6 +18,7 @@ Brought to you by the AMO theory group at Berkeley National Lab.
 
    readme
    installation
+   background
    usage
    modules
    contributing

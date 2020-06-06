@@ -1,0 +1,480 @@
+Solving the Schr¨ odinger equation using grid methods: The Finite Element Method with a Discrete Variable Representation
+C. W. McCurdy - Chem 210A/B, U. C. Davis, May 2019, revisions 11/2019. Copyright reserved
+These notes are an introduction to Discrete Variable Representations (DVRs) using an example that has particularly general applicability. The Finite Element Method with a Discrete Variable Representation (FEM-DVR) provides a way to solve the time-independent or time-dependent Schr¨ odinger equation that, like all DVR methods, is more accurate and faster than finite difference. This method is one of a family of Discrete Variable Representations that are in common use today in chemistry and physics. It can be applied to problems with any potential on any interval. These notes explain the FEM-DVR method using Gauss-Lobatto quadrature, and also outline the Crank-Nicolson propagator for solving the time-dependent Schr¨ odinger equation.
+
+I.
+
+INTRODUCTION
+
+These notes describe a method for solving the Schr¨ odinger equation for a particle moving in one dimension with coordinate x for any potential V (x) on any interval of x. The variational method of course provides a way to do so, but its application generally poses a practical problem we would like to overcome: If we expand the unknown wave function in H | = E | in a finite set of basis functions
+N
+
+| 
+
+n=1
+
+cn |n
+
+(1)
+
+substitute it into the Schr¨ odinger equation, and project from the left with m |, we come quickly to the familiar matrix representation Hc = Ec ^|n + m |V ^ |n Hmn = m |T (2)
+
+with
+
+that we can also get from the variational theorem. This is a variational basis representation of the Schr¨ odinger equation. To construct this matrix eigenvalue problem we need the matrix elements of both the kinetic energy and potential ^ and V ^ . If we choose a basis for which the kinetic energy matrix elements are easy to evaluate, energy operators T and then try to apply it to solving this problem for various potentials, we generally find that the matrix elements are difficult to perform for many of those potential functions. The DVR is a way of getting around this problem. It is described in an extensive literature on many kinds of DVR that began in the 1980s with seminal work by John Light in the Chemistry Department at the University of Chicago and his coworkers [1]. The central idea is this: We choose a particular form of basis functions, no matter what the potential, that are constructed based on a Gaussian quadrature. Then we use that Gaussian quadrature to do every integral in the problem ­ of both the kinetic and potential energy operators. The result is that the potential energy matrix is diagonal ^ |n = nm V (xn ) m |V (3)
+
+where xn is a Gauss quadrature point. In other words, in this basis set method the potential energy matrix is always diagonal, and there are no potential energy integrals to be evaluated. We only have to evaluate the potential on a grid of quadrature points in x. So if we can evaluate the potential energy function as a function of the coordinates, we can reduce the Schr¨ odinger equation directly to a matrix eigenvalue equation. To see how this works we have first to familiarize ourselves with the basics of Gaussian quadrature for performing integrals in general.
+II. GAUSSIAN QUADRATURE
+
+A Gaussian quadrature is a set of points and weights for approximating an integral as a sum. The most basic example is the Gauss-Legendre quadrature summarized together with many other Gauss quadratures in Abramowitz
+
+2 and Stegun [2] (the NBS Handbook of Mathematical Functions) starting on page 887,
++1 n
+
+f (x)dx =
+-1 i=1
+
+wi f (xi ) + Rn
+
+(4)
+
+Rn  f
+
+(2n)
+
+( )
+
+for some - 1 <  < 1
+
+the points, xi , are the zeros of the nth order Legendre polynomial Pn (x), and the weights, wi are given by formulas  involving the derivative of that polynomial, in this case, wi = 2/ (1 - xi )2 [Pn (xi )]2 . The error is proportional to th the 2n derivative of the integrand. That means that this quadrature is exact if f (x) is any polynomial of degree 2n - 1 or lower. This property is at the heart of Gauss quadrature and the DVR method. The quadrature can be scaled onto any finite interval
+b
+
+f (y )dy =
+a
+
+b-a 2
+
+n
+
+wi f (yi ) + Rn
+i=1
+
+yi =
+
+b-a 2
+
+xi +
+
+b+a 2
+
+(5)
+
+by scaling the points and weights. The Legendre polynomials do not have zeros at the endpoints of the interval [-1, 1], so all the quadrature points at any order are interior to that interval. For our DVR we need to have points in the quadrature at the endpoints of the interval, because that is where we have to apply the boundary conditions of the Schr¨ odinger equation. That quadrature is called the Gauss-Lobatto quadrature [2],
++1
+
+f (x)dx =
+-1
+
+2 [f (-1) + f (1)] + n(n - 1) Rn  f
+(2n-2)
+
+n-1
+
+wi f (xi ) + Rn
+i=2
+
+(6)
+
+( )
+
+for some - 1 <  < 1
+
+which can of course be written in the form of Eq.(5) with the same scaling. The only difference is that before the scaling the first and last points are explicitly -1 and +1, with the weights n(n2 -1) . There are algorithms for computing the remaining Gauss- Lobatto points and weights at any order, and those are available in C, C++, Fortran and Python libraries. Fixing the two endpoints to be quadrature points lowers the accuracy of the quadrature. It now quadratures polynomials of degree up to 2n-3 exactly. We will use the Gauss-Lobatto quadrature here, but there are many other Gauss quadratures. In general they quadrature integrals of the form
+b n
+
+f (x)W (x)dx =
+a i=1
+
+wi f (xi ) + Rn
+
+(7)
+
+with some positive definite weight function W (x). For example if a = - and b = , with the weight function 2 W = e-x , the quadrature is based on Hermiute polynomials and is called Gauss-Hermite quadrature. See Abramowitz and Stegun [2] for a summary of eight common quadratures. Of course, there is a Wikipedia page too.
+III. DISCRETE VARIABLE REPRESENTATION OF THE WAVE FUNCTION AND HAMILTONIAN USING GAUSS-LOBATTO QUADRATURE
+
+The Gauss-Lobatto quadrature points provide a way to construct n polynomials of degree n - 1 called "interpolating polynomials" that are each zero at all but one of the quadrature points,
+n
+
+Lj (x) =
+i=j
+
+x - xi xj - xi
+
+(8)
+
+and are equal to 1 at x = xj . So if we have the values of a function at the quadrature points we can interpolate it by effectively fitting it with Nth order polynomials as
+n
+
+f (x) 
+
+f (xj )Lj (x)
+j =1
+
+(9)
+
+3 this fit reproduces the function exactly at the quadrature points, and provides a polynomial interpolation between them. That's the starting idea of the DVR. We will normalize these interpolating polynomials by multiplying by  1/ wj to form our DVR basis functions, j (x) = 1
+n
+
+1/2 wj i=j
+
+x - xi xj - xi
+
+(10)
+
+These functions are orthonormal within the quadrature approxiimation,
+b a n
+
+i (x)j (x)dx 
+
+wk i (xk )j (xk ) = ij
+k=1
+
+(11)
+
+Lobatto Shape Functions
+1.0 0.8 0.6 0.6 0.4 0.2 0.0 -0.2 0.8
+
+DVR Basis
+
+phi
+
+0.4 0.2 0.0 -0.2 10 12 14
+
+x
+
+16
+
+18
+
+20
+
+phi
+
+10
+
+12
+
+14
+
+x
+
+16
+
+18
+
+20
+
+FIG. 1: Left: Lobatto shape functions, the interpolating polynomials in Eq.(8) for the Gauss-Lobatto quadrature, in this case of order 7. Right: DVR basis of normalized functions in Eq.(eq:DVRbasis) constructed with these shape functions. Note that elimination of the first and last interpolating polynomials enforces the boundary conditions that the wave function is zero at the endpoints of the interval.
+
+The central idea of a DVR using the Gauss-Lobatto quadrature is to 1. Expand our unknown wave function in these Gauss-Lobatto basis functions and then 2. Define every matrix element as its approximation by the underlying Gauss-Lobatto quadrature The idea of using the Gauss-Lobatto quadrature to define a DVR was introduced by Manolopoulos and Wyatt [3, 4] in 1989. It allows us to apply boundary conditions at the two endponts, a and b of the interval on which the quadrature is defined. We will apply the boundary conditions that the wave function is zero at the endpoints, which we can accomplish by simply excluding from the basis the basis functions that are nonzero at first and last of the quadrature points. We expand the wave function in the DVR basis
+n-1
+
+(x) =
+m=2
+
+m m (x)
+
+(12)
+
+where the unknown coefficients are related to the values of the wave function (x) at the grid points by m = 1/2 (xm )wm . Then the matrix of the kinetic energy is
+2 b
+
+Ti,j = -
+
+2m
+
+i (x)
+a
+
+2 d2  ( x ) dx = j dx2 2m
+
+b a
+
+d d i (x) j (x)dx = dx dx
+
+n-1  wk  i (xk )j (xk ) exactly(!) k=2
+
+(13)
+
+4 where we integrated by parts and use the boundary condition we are applying to get an obviously symmetric matrix result. We can see that the integrand in Eq.(13) is of order 2(n - 2) = 2n - 4 so the Gauss-Lobatto quadrature is exact for the kinetic energy. For the potential energy we have
+2 b a n-1
+
+Vi,j = -
+
+2m
+
+i (x)V (x)j (x)dx 
+
+wk i (xk )V (xk )j (xk ) = i,j V (xi )
+k=2
+
+(14)
+
+The potential matrix is diagonal because the DVR basis functions are at all the quadrature points but one. That has to be the same point for the two basis functions, or else the integral is zero. With this DVR, the time-independent Schr¨ odinger equation has been reduced to a matrix equation H = E  Hij =Tij + Vii ij (15)
+
+with
+
+The kinetic energy matrix is full and is treated exactly. The potential energy matrix elements are approximated by the quadrature. To improve the approximation we increase the order of the quadrature. We only require the values of the potential at the quadrature points, and once we have the coefficients we can scale them so that the function  to be normalized DVRs are a popular numerical approach in one or more dimensions. The sort of DVR described here can be used for the angular degrees of freedom in spherical polar coordinates, for example, with the change of variable x = cos . To increase the accuracy of the DVR basis set representation of the wave function one only needs to increase the order of the underlying quadrature. For large intervals in x and wave functions with short wavelengths, we might need many hundreds or thousands of grid points. In this approach, that would mean calculating the points and weights to high precision for a quadrature that might of the order of thousands. To escape that problem, there is a popular variant of this method called the FEM-DVR.
+IV. FINITE-ELEMENT METHOD WITH DISCRETE VARIABLE REPRESENTATION
+
+In this method, first proposed by Rescigno and McCurdy [5] in 2000, we divide up the interval in x into sub-intervals call finite elements. With each of those elements we associate a separate Gauss-Lobatto quadrature and a separate DVR basis constructed according to Eq.(10). However, we must pay special attention to the boundaries between the elements. To allow the wave function to be continuous across the finite element boundaries we must include the Lobatto shape functions that we eliminated above, and that are nonzero at the ends of the finite element interval. To do so, we start by labeling the Lobatto-shape functions according to which interval, , they are associated with L j (x) =
+x -x  n i  i=j x j -x i  x 1  x  xn
+
+0
+
+x < x 1,
+
+x n <x
+
+(16)
+
+and similarly labeling the DVR basis functions  j (x) = 1 L (x)  )1/2 j (wj 2j n-1 (17)
+
+We can then create "bridging functions" that connect the elements  and  + 1 according to  n (x) = 1
+ wn +1 L (x) n (x) + L1
+
++
+
++1 w1
+
+(18)
+
+The bridging functions are normalized, because they are integrated by the combination of the quadratures in the two finite elements. This idea is illustrated in Fig. 2. The bridging functions extend across two elements, while the FEM-DVR basis within each element is nonzero only on that interval We can extend this process to create as many elements as we want. So for example, we might use 20th order quadrature in each element and have 100 elements of various sizes cover the entirety of the interval a  x  b. Rescigno and McCurdy [5] give the formulas for the kinetic energy matrix elements for this method, which are still exactly evaluated by the Gauss-Lobatto quadrature(s) over the entire domain of x. The potential matrix elements
+
+5
+
+FEM-DVR Basis: One element + bridging functions
+1.50 1.25 1.00 0.75 0.50 0.25 0.00 -0.25 1.50 1.25 1.00 0.75 0.50 0.25 0.00 -0.25
+
+FEM-DVR Basis
+
+phi
+
+0
+
+5
+
+10
+
+15
+
+x
+
+20
+
+25
+
+30
+
+phi
+
+0
+
+5
+
+10
+
+15
+
+x
+
+20
+
+25
+
+30
+
+FIG. 2: FEM-DVR basis using three finite elements. Left: the basis functions associated with the central element and the bridging functions. Note the basis functions have compact support; except for the bridging functions, the FEM-DVR basis functions do not extend beyond the finite element boundaries. Right: FEM-DVR basis for three element basis, Again all basis functions have compact support, extending over only one or two elements (bridging functions).
+
+remain diagonal. The kinetic energy is no longer a full matrix, but has the form of overlapping blocks originating from ther finite elements. Schematically we can display the form of the Hamiltonian for four elements as H=  X X  0  0  H = 0 0  0  0 0 X X X X 0 0 0 0 0 0 X X X 0 0 0 0 0 0 X X X X X 0 0 0 T 0 0 0 X X X 0 0 0 0 0 0 X X X X X 0 0 0 0 0 0 X X X 0 0 0 0 0 0 X X X X +   X 0 0 0   0 0   0 0   0 +0  0 0   0 0  0 X 0 X 0 X 0 0 0 0 0 0 0 0 0 X 0 0 0 0 0 0 V 0 0 0 X 0 0 0 0 0 0 0 0 0 X 0 0 0 0 0 0 0 0 0 X 0 0 0 0 0 0 0 0 0 X 0 0 0 0 0 0 0 0 0 X 0  0 0  0  0  0 0  0  0 X (19) (20) (21)
+
+(22)
+
+where there are four blocks in the kinetic energy matrix, the first and last of which are smaller than all the intermediate blocks, because the lack the first and last basis functions that would have been nonzero at the boundaries of the entire interval in x. The FEM-DVR basis is orthogonal within the overall Gauss-Lobatto quadrature. The kinetic energy matrix is exactly evaluated with the quadrature. The potential energy is only required at the quadrature points, i |V |j = ij V (xi ) (23)
+
+The DVR representation not variational because both the potential and overlap matrix elements are approximated by the quadrature and are not exact, although with moderately dense grids that property barely noticeable. Also, the FEM-DVR enforces only continuity at the finite element boundaries and not continuity of the derivatives of the wave function. Therefore there is first order error at each finite element boundary. Again, with moderately dense grids the discontinuity in the derivative at the boundaries is very slight and causes no numerical pathologies. Higher dimensions: Extension of both the DVR and FEM-DVR methods to higher dimensions is straightforward. Suppose we had a problem with x and y degrees of freedom. In a product basis of separate DVR basis functions i (x) and m (y ) the kinetic and potential energy matrices are
+x y Tim,jn = i (x)m (y )|Tx + Ty |j (x)n (y ) = mn Tij + ij Tmn
+
+Vim,jn = i (x)m (y )|V (x, y )|j (x)n (y ) = ij mn V (xi , ym )
+
+(24)
+
+6 and extentions to higher dimensions are similar. One only needs the potential evaluated at the quadrature points, and the kinetic energy matrix becomes increasingly sparse as the number of dimensions increases. Scalable algorithms for implementing the FEM-DVR in higher dimensions take advantage of that sparsity, both in storage and numerical operations.
+V. DVRS CONSTRUCTED FROM OTHER ORTHOGONAL POLYNOMIALS AND THE NOTION OF A "PROPER DVR"
+
+Orthogonal polynomials tridiagonalize the matrix of the position with the weight with which the orthogonal polynomials are orthogonal
+b
+
+Qi,j =
+a
+
+i (x) x j (x) W (x)dx = tridiagonal matrix
+
+(25)
+
+That is an essential property that is derivable from the three-term recursion relations satisfied by all orthogonal polynomials. Every set of orthogonal polynomials defines a quadrature for their values of a, b and W (x). For example we can construct a DVR for the interval - < x <  using harmonic oscillator functions that apply the proper bound-state boundary conditions at infinity, and the underlying quadrature will be the Gauss-Hermite quadrature as described in the appendices of reference [6]. If we begin with a real orthogonal basis {i (x)}N i=1 that tridiagonalizes the position operator, x, we can generate a "proper DVR", in the terminology of the appendices of the review article [6] by Hans Dieter-Meyer and coworkers, as follows. 1. Diagonalize the matrix of the position operator Q Qi,j = i |x|j Q = UXUT where X is the matrix of position eigenvalues X, = x , 2. Transform the exactly evaluated matrix of the kinetic energy, T to the basis of position eigenfunctions T DV R = UT TU 3. Construct the DVR representation of the Hamiltonian as
+DV R DV R H, = T, + V (x ),
+
+(26) (27)
+
+(28)
+
+(29)
+
+in which the potential is diagonal, so no matrix elements of it are required. The DVR basis in which the Hamiltonian is represented by H DV R is
+N
+
+ (x) =
+j =1
+
+j (x)Uj,
+
+(30)
+
+These functions also provide the "interpolating basis" mentioned below. Because the original basis tridiagonalized the position operator, we can construct the underlying Gauss quadrature, whose abscissas are {x }N =1 , and whose weights are given by
+1/2 w = Uk, /k (x )
+
+(31)
+
+which in this case does not depend on k . If the original basis had not tridiagonalized x this formula for the weights would have depended on k . In a proper DVR we can use the properties of the underlying Gauss quadrature to show that the original basis satisfied discrete orthonormality
+N
+
+w j (x )k (x ) = j,k
+=1
+
+(32)
+
+7 and discrete completeness
+N
+
+(w w )1/2 j (x )j (x ) = ,
+j =1
+
+(33)
+
+The combination of these two properties means that the the DVR and an expansion of the wave function in the original orthogonal polynomials are exactly equivalent. Moreover the DVR basis in a proper DVR has the important discrete  -property
+-1/2  (x ) = w ,
+
+(34) (35)
+DV R
+
+This relation tells us that for any function spanned by the original basis we have, using the quadrature, So that if we find the eigenvectors of H or use it in the DVR representation of linear equations like (E - H d, the resulting vectors represent the values of  on the gridpoints  (x)   = (w1  (x1 ), w2  (x2 ), · · · , wN  (xN ))
+1/2 1/2 1/2 DV R 1/2  | = w  (x )
+
+) = (36)
+
+Equally important is the fact that the DVR basis provides the interpolating basis whereby we can get  at any value of x via its expansion
+N
+
+ (x) =
+=1
+
+  (x)
+
+(37)
+
+Note: If the original basis does not tridiagonalize the position operator, but instead tridiagonalizes an invertable function of x, like 1/x or (x0 - x)2 , a proper DVR can be generated by diagonalizing that operator, and writing the abscissas x in terms of the eigenvalues of that operator.
+VI. A. TIME PROPAGATION USING THE FEM-DVR AND CRANK-NICOLSON PROPAGATOR
+
+Finite difference in time as a route to approximate solutions of the time-dependent Schr¨ odinger equation
+
+The time-dependent Schr¨ odinger equation has been converted by our DVR to a time-dependent matrix equation ( = 1),   (t) = H(t)  (t) (38) t which is of course an initial value problem. The simplest way to treat it is by approximating the derivative by finite difference, i (t + ) -  (t)  H(t)  (t)  or  (t + ) = (1 - iH(t))  (t) i (39)
+
+which would allow us to step forward in time with a single matrix multiplication. Unfortunately this idea, known as "forward Euler", produces an unstable algorithm, whose error, depending on the spectrum of H (its eigenvalues) grows exponentially. There are many ways to remedy this problem at the cost of more matrix multiplications per step, and several of them can be derived by using higher order finite difference approximations to first derivative involving more points in time. Standard methods, like the variable time-step Runge-Kutta method, and various "predictor-corrector" methods can be found in the literature and software libraries. A propagator that has the particularly important advantage for quantum mechanics of being unitary is due to Crank and Nicolson [7] (whose original paper was about heat-conduction equations). We can " derive" it easily by replacing the right hand side by an average of it evaluated at t and t +  1  (t + ) -  (t) H(t + )  (t + ) + H(t)  (t))   2 1  H(t + /2)  (t + ) + H(t + /2) (t)) 2   1 + i H(t + /2)  (t + ) = 1 - i H(t + /2)  (t) 2 2 i
+
+(40)
+
+or
+
+8 We can write the Crank-Nicolson propagator result in two equivalent forms, 1+i  (t + ) =  H(t + /2)  (t + ) = 2  1 + i H(t + /2) 2
+-1
+
+1-i
+
+ H(t + /2)  (t) 2
+
+ 1 - i H(t + /2)  (t) 2
+
+(41)
+
+Implementing the first relation in Eq.(41) to take a time step requires one matrix multiplication plus a single solution of linear equations. It is one of a class of "implicit" methods that require a solution of linear equations in contrast to "explicit" methods that require only matrix-vector multiplications. Solving the linear equations is the most effficient implementation of the Crank-Nicolson propagator if the Hamiltonian is time dependent, because solving one set of linear equations requires much less computation than inverting a matrix. If the Hamiltonian is not time dependent however we can construct the inverse once and for all and use it to take any number of time steps, which then only require one matrix-vector multiplication each. U= 1+i  H 2
+-1
+
+1-i
+
+ H 2 for H time-independent
+
+ (t + ) = U (t)  (t + n) = Un  (t)
+
+(42)
+
+A single matrix inversion and matrix-matrix multiplication then allows us to take n time steps with only n matrixvector multiplications.
+B. Properties of the Crank-Nicolson propagator
+
+1. Unitarity: Crank-Nicolson propagation is unitary, meaning that for each time step the norm of the wave function is conserved. The reason is that the matrix U is unitary, including the case that H is time-dependent. Proof uses the fact that H is hermitian, H  = H : U= U = 1+i 1+i  H(t + /2) 2   H 2
+-1 -1
+
+1-i   H 2
+-1
+
+ H(t + /2) 2 1+i  H 2  H 2  H 2 1-i 1-i 1-i  H 2  H 2  H 2
+-1
+
+1-i 1-i
+
+= 1+i 1-i
+
+UU = 1 + i = 1+i =1
+
+ H 2  H 2
+
+ H 2  H 2
+
+-1
+
+(43)
+
+-1
+
+-1
+
+1+i
+
+H commutes with itself and 1
+
+So  (t + ) ·  (t + ) =  (t) U · U (t) =  (t) ·  (t) and the norm of the wave function is preserved at every step. 2. Error is third order: The order of the error in the Crank-Nicolson propagator is 3 , as we see by expanding in powers of  and comparing with the expansion of exp(-iH), U=   H 1-i H 2 2  2   = 1 - i H + (i H) - (i H)3 · · · 2 2 2 1 = 1 - iH + (-iH)2 + O(3 ) 2 -iH =e + O(3 ) 1+i
+-1
+
+1-i
+
+ H 2
+
+(44)
+
+3. Stability: The Crank-Nicolson propagator is unconditionally stable, meaning that no matter what the step size and spectrum of H(t) the error of the propagation does not increase exponentially as for forward Euler.
+
+9
+VII. FUNCTIONS IN THE PYTHON DVRHELPER CLASS
+
+class DVRHelper(object): def __init__(self, n_order, FEM_boundaries, Mass=1): # # Builds 1D FEM DVR grid and kinetic energy matrix representation in # normalized FEM DVR basis of shape functions and bridging functions # Finite elements of any sizes determined by FEM_boundaries array, but # all with same order DVR # # Returns dimension of the basis, the points and weights and the Kinetic Energy matrix # def deriv(self, n, x, w): # # derivative of UNnormalized lobatto shape functions #
+
+def Kinetic_Energy_FEM_block(self, n, x, w): # Calculate block of Kinetic energy from one finite element
+
+def Hamiltonian(self, V_potential, time): # # Build Hamiltonian given Kinetic energy matrix and potential function # # Add potential to diagonal -- specified by V_potential(x,t), function passed in # def psi_evaluate(self, x, coef_vector): # # Evaluate a function represented by a vector of coefficients of the FEM-DVR basis functions # at the point x. Array containing vector of coefficients does not contain coefficients for # the beginning and end of the FEM-DVR grid where boundary condx. enforce wavefunction = zero. # def Plot_Psi(self, Psi_coefficients, plot_title_string="Plot of FEM-DVR representation", N_plot_points=500,make_plot=True): # # quick generic plot of function represented by FEM DVR coefficients # default number of points to plot specified in keyword argument # returns x, y points for a plot without making it if make_plot=False def Crank_Nicolson(self, t_initial, t_final, N_times, Coefs_at_t_initial, potential,Is_H_time_dependent=True): # # Crank Nicolson Propagator for time-dependent or time-independent H #
+
+[1] J. V. Lill, G. Parker, and J. Light, "The discrete variablefinite basis approach to quantum scattering," The Journal of Chemical Physics, vol. 85, pp. 900­910, 07 1986. [2] M. Abramowitz and I. A. Stegun, Handbook of Mathematical Functions with Formulas, Graphs, and Mathematical Tables. New York: Dover, ninth dover printing, tenth gpo printing ed., 1964.
+
+10
+[3] D. Manolopoulos and R. Wyatt, "Quantum scattering via the log derivative version of the kohn variational principle," Chemical Physics Letters, vol. 152, no. 1, pp. 23 ­ 32, 1988. [4] D. E. Manolopoulos, M. D'Mello, and R. E. Wyatt, "Quantum reactive scattering via the log derivative version of the kohn variational principle: General theory for bimolecular chemical reactions," The Journal of Chemical Physics, vol. 91, no. 10, pp. 6096­6102, 1989. [5] T. N. Rescigno and C. W. McCurdy, "Numerical grid methods for quantum-mechanical scattering problems," Phys. Rev. A, vol. 62, p. 032706, Aug 2000. [6] M. H. Beck, A. J¨ ackle, G. A. Worth, and H.-D. Meyer, "The multiconfiguration time-dependent Hartree method: A highly efficient algorithm for propagating wavepackets.," Phys. Rep., vol. 324, pp. 1­105, 2000. [7] J. Crank and P. Nicolson, "A practical method for numerical evaluation of solutions of partial differential equations of the heat-conduction type," Advances in Computational Mathematics, vol. 6, pp. 207­226, Dec 1996.
+
+
