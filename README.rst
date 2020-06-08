@@ -7,7 +7,7 @@
 .. raw:: html
 
    <p align="center">
-     <img src=docs/_static/scatteredWave.png width="500px;" height="400px;" alt=""/>
+     <img src=docs/_static/images/scatteredWave.png width="500px;" height="400px;" alt=""/>
    </p>
 
 brought to you by the AMO theory group at Berkeley National Lab
@@ -64,7 +64,7 @@ Features
 .. raw:: html
 
    <p align="center">
-     <img src=docs/_static/DVR.png width="800px;" height="600px;" alt=""/>
+     <img src=docs/_static/images/DVR.png width="800px;" height="600px;" alt=""/>
    </p>
 
 This package offers a few toy problems out of the box.

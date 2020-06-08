@@ -5,3 +5,16 @@
     font-weight: bold;
     font-style: italic;
 }
+.bold {
+    font-weight: bold;
+    font-style: normal;
+}
+.italic {
+    font-style: italic;
+}
+.math {
+    text-align: left;
+}
+.eqno {
+    float: right;
+}
