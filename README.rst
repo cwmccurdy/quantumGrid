@@ -45,7 +45,7 @@ About
 =====
 
 Exterior Complex Scaled Finite-Element Element Discrete Variable Representation grid for general physics problems.
-quantumGrid is a package for solving a 1-D Schrodinger equation for an
+quantumGrid is a package for solving a 1-D Schrödinger equation for an
 arbitrary potential.
 
 Motivation
@@ -54,7 +54,7 @@ Motivation
 This python package was created for a graduate course in time-dependent
 quantum mechanics at UC Davis. Given the generality and usefulness of a
 Finite Element Method - Discrete Variable Representation (FEM-DVR) grid
-for solving the Schrodinger equation and simple scattering problems, we
+for solving the Schrödinger equation and simple scattering problems, we
 wanted to go open source and provide this numerical tool for others in
 the name of science!
 
@@ -95,7 +95,7 @@ key <https://allcontributors.org/docs/en/emoji-key>`__):
 
    <td align="center">
    <a href="https://chemistry.ucdavis.edu/people/william-mccurdy">
-   <img src="docs/_static/Bills_pic.jpg" width="100px;" alt=""/>
+   <img src="docs/_static/images/Bills_pic.jpg" width="100px;" alt=""/>
 
 Willaim (Bill) McCurdy 💻 🚧 📖
 

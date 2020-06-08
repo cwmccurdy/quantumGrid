@@ -2,7 +2,7 @@ About
 =====
 TODO: Go into details!!!
 
-quantumGrid is a package for solving a 1-D Schrdinger equation for an
+quantumGrid is a package for solving a 1-D Schrödinger equation for an
 arbitrary potential.
 
 Motivation
@@ -11,7 +11,7 @@ Motivation
 This python package was created for a graduate course in time-dependent
 quantum mechanics at UC Davis. Given the generality and usefulness of a
 Finite Element Method - Discrete Variable Representation (FEM-DVR) grid
-for solving the Schrdinger equation and simple scattering problems, we
+for solving the Schrödinger equation and simple scattering problems, we
 wanted to go open source and provide this numerical tool for others in
 the name of science!
 
@@ -33,6 +33,18 @@ key <https://allcontributors.org/docs/en/emoji-key>`__):
 .. raw:: html
 
    <tr>
+
+.. raw:: html
+
+   </tr>
+
+.. raw:: html
+
+   <td align="center">
+   <a href="https://chemistry.ucdavis.edu/people/william-mccurdy">
+   <img src="_static/images/Bills_pic.jpg" width="100px;" alt=""/>
+
+Willaim (Bill) McCurdy 💻 🚧 📖
 
 .. raw:: html
 

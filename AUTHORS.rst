@@ -14,7 +14,7 @@ Development Leads
 * Zachary Streeter
   https://www.linkedin.com/in/zachary-streeter-44a323102/
 
-Contributors
-------------
+Want To Help Develop?
+---------------------
 
-Please contact Zachary if you would like to contribute!
+Please contact Bill or Zachary if you would like to contribute!

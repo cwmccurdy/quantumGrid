@@ -97,7 +97,11 @@ These functions are now normalized in the very specific sense that they are orth
 .. math::
   \int_a^b \phi_i(x) \phi_j(x) dx \approx \sum_{k=1}^n w_k \phi_i(x_k) \phi_j(x_k) = \delta_{ij}
 
-.. image:: _static/images/DVR.png
+.. image:: _static/images/lobattoShapeFunctions.png
+  :width: 49 %
+
+.. image:: _static/images/DVRbasis.png
+  :width: 49 %
 
 
 The central idea of a DVR using the Gauss-Lobatto quadrature is to
@@ -159,6 +163,12 @@ and similarly labeling the DVR basis functions
   \phi_j^\alpha(x) = \frac{1}{(w_j^\alpha)^{1/2}}  L_j^\alpha(x) \qquad 2 \le j \le n-1
   :label: FEMbasis
 
+.. image:: _static/images/oneElementDVR.png
+  :width: 49 %
+
+.. image:: _static/images/FEMDVRBasis.png
+  :width: 49 %
+
 We can then create bridging functions that connect the elements :math:`\alpha` and :math:`\alpha+1` according to
 
 .. math::
@@ -167,7 +177,8 @@ We can then create bridging functions that connect the elements :math:`\alpha` a
 
 The bridging functions are normalized, because they are integrated by the combination of the quadratures in the two finite elements.
 
-This idea is illustrated in Fig. .The bridging functions extend across two elements, while the FEM-DVR basis within each element is nonzero only on that interval
+This idea is illustrated in the figures directly above. The bridging functions extend across two elements, while the FEM-DVR basis within each element is nonzero only on that interval.
+
 We can extend this process to create as many elements as we want. So for example, we might use 20th order quadrature in each element and have 100 elements of various sizes cover the entirety of the interval :math:`a \le x \le b`.
 
 Rescigno and McCurdy~\cite{Rescigno_McCurdy2000} give the formulas for the kinetic energy matrix elements for this method, which are still exactly evaluated by the Gauss-Lobatto quadrature(s) over the entire domain of :math:`x`. The potential matrix elements remain diagonal. The kinetic energy is no longer a full matrix, but has the form of overlapping blocks originating from their finite elements. Schematically we can display the form of the Hamiltonian for four elements as
