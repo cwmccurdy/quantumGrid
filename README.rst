@@ -70,7 +70,7 @@ Features
 
 A few toy problems can be found in the examples directory. There
 you will find example scripts implementing time-independent and
-time-dependent calculations of H_2.
+time-dependent calculations of molecular hydrogen.
 
 Documentation
 ==============

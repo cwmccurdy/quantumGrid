@@ -20,7 +20,6 @@
             (2) Bernstein fit of Kolos and Wolneiwicz potential with :math:`\\frac{1}{R^6}`, :math:`\\frac{1}{R^8}`, :math:`\\frac{1}{R^{10}}` asymptotic behavior -- Gives near spectroscopic accuracy used in :cite:`TURNER1982127`, results there are reproduced by this code.
 
 """
-# %%
 # preliminaries to invoke SciPy linear algebra functions
 from scipy import linalg as LA
 
