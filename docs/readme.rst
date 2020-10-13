@@ -7,7 +7,7 @@ a Finite Element Method with a Discrete Variable Representation
 Schrödinger equation. This grid provides a compact supported foundation
 for numerically accurate integration and also allows for a natural
 application of outgoing scattering boundary conditions by adding a complex
-tail as the last finite element of the FEM-DVR grid, called *exterir
+tail as the last finite element of the FEM-DVR grid, called *exterior
 complex scaling* (ECS). Therefore, this grid can be applied to
 scattering problems where the resonances become square integrable
 under this complex rotation of the Hamiltonian.
