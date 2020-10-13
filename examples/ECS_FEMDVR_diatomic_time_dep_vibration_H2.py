@@ -1,13 +1,14 @@
-"""C.W. McCurdy 03/13/2020
-   Time-dependent Exterior Complex Scaling (ECS) FEM-DVR example
-   Uses femdvr.py and potential class.
+"""
+    C.W. McCurdy 03/13/2020
+    Time-dependent Exterior Complex Scaling (ECS) FEM-DVR example
+    Uses femdvr.py and potential class.
 
-   Finite Element Method - Discrete Variable Representation (FEM-DVR)
-   for 1D Schroedinger equation using Gauss-Lobatto quadrature in
-   each finite element Uses class FEM_DVR(args) to construct FEM-DVR
-   points, weights and Kinetic Energy
+    Finite Element Method - Discrete Variable Representation (FEM-DVR)
+    for 1D Schroedinger equation using Gauss-Lobatto quadrature in
+    each finite element Uses class FEM_DVR(args) to construct FEM-DVR
+    points, weights and Kinetic Energy
 
-   Example:
+    Example:
        Finds all eigenvalues of complex scaled H2 Hamiltonian
        for nuclear motion plots any one of them, specified by n_Plot
        Then starts a Gaussian packet in the well (e.g. with :math:`j=17`)
@@ -15,15 +16,15 @@
        the well and a part that dissociates and vanishes on the ECS
        contour.
 
-   Potentials defined here:
+    Potentials defined here:
        (1) Morse potential for :math:`H_2`
        (2) Bernstein fit of Kolos and Wolneiwicz potential with :math:`\\frac{1}{R^6}`, :math:`\\frac{1}{R^8}`, :math:`\\frac{1}{R^{10}}` asymptotic behavior -- Gives near spectroscopic accuracy used in :cite:`TURNER1982127`, results there are reproduced by this code.
 
-References
-----------
+    References
+    ----------
 
-.. bibliography:: _static/refs_examples.bib
-  :style: unsrt
+    .. bibliography:: _static/refs_examples.bib
+      :style: unsrt
 """
 # preliminaries to invoke SciPy linear algebra functions
 from scipy import linalg as LA

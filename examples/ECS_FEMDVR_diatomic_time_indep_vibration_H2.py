@@ -1,31 +1,32 @@
-"""C.W. McCurdy 03/13/2020
-   Time-independent Exterior Complex Scaling (ECS) FEM-DVR example
-   Uses femdvr.py class and potential class.
+"""
+    C.W. McCurdy 03/13/2020
+    Time-independent Exterior Complex Scaling (ECS) FEM-DVR example
+    Uses femdvr.py class and potential class.
 
-   Finite Element Method - Discrete Variable Representation (FEM-DVR)
-   for 1D Schroedinger equation using Gauss-Lobatto quadrature in
-   each finite element Uses class DVRHelper() to construct FEM-DVR
-   points, weights and Kinetic Energy
+    Finite Element Method - Discrete Variable Representation (FEM-DVR)
+    for 1D Schroedinger equation using Gauss-Lobatto quadrature in
+    each finite element Uses class DVRHelper() to construct FEM-DVR
+    points, weights and Kinetic Energy
 
-   For time-independent potential, this example implements Exterior
-   Complex Scaling on the FEM-DVR contour.  The value of R0 and the
-   complex scale factor :math:`e^{I*theta}` are specified.  The representation
-   of the pootential must be able to be evaluated on the complex part
-   of the contour.
+    For time-independent potential, this example implements Exterior
+    Complex Scaling on the FEM-DVR contour.  The value of R0 and the
+    complex scale factor :math:`e^{I*theta}` are specified.  The representation
+    of the pootential must be able to be evaluated on the complex part
+    of the contour.
 
-   Example:
+    Example:
        Finds all eigenvalues of complex scaled Hamiltonian and
        plots any one of them, specified by n_Plot
 
-   Potentials defined here:
+    Potentials defined here:
       (1) Morse potential for :math:`H_2`
       (2) Bernstein fit of Kolos and Wolneiwicz potential with :math:`\\frac{1}{R^6}`, :math:`\\frac{1}{R^8}`, :math:`\\frac{1}{R^{10}}` asymptotic behavior -- Gives near spectroscopic accuracy used in :cite:`TURNER1982127`, results there are reproduced by this code.
 
-References
-----------
+    References
+    ----------
 
-.. bibliography:: _static/refs_examples.bib
-  :style: unsrt
+    .. bibliography:: _static/refs_examples.bib
+      :style: unsrt
 """
 # preliminaries to invoke SciPy linear algebra functions
 from scipy import linalg as LA
