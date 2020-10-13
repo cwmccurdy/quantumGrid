@@ -45,7 +45,7 @@ About
 =====
 
 Exterior Complex Scaled Finite-Element Element Discrete Variable
-Representation grid for general physics problems. In other words
+Representation grid for general physics problems. In other words,
 quantumGrid is a package for solving a 1-D Schrödinger equation
 for an arbitrary potential.
 
