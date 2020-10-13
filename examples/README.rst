@@ -19,49 +19,8 @@ states.  The complex resonance energy is  E_res = (0.004044878419994
 
 The Time-dependent example propagates an initially Gaussian wave
 packet that starts centered at a value of R just inward of the
-maximum in the potential V(R) +j(j+1)/2*mu*R**2
+maximum in the potential V(R) +j(j+1)/2*\mu*R^2
 
 Plotting output from both examples is written in ./Plot_Output
 while .dat files are written in this directory.  Spectrum.dat
 contains the eigenvalues of the ECS scaled Hamiltonian.
-
-****Not for distribution, another example relevant to the
-question of python vectorization***
-
-O2+ catiom  example from the collaboration with Leone/Neumark Lab is in
-
-ECS_FEMDVR_April3_O2+cstate_vibration.py
-
-It computes the complex spectrum using ECS of resonances that
-decay by tunneling in the c state of the O2+ cation.
-The resonance lifetime of ~110 fs of the one in the example is
-close to the experimental measurement.
-
-The point of including this example here is that its potential,
-represented by a cubic spline interpolation, doesn't seem to
-vectorize properly and so the ECS_DVRHelper.py library had the following
-lines for a vectorized build of the potential commented and replaced
-in Hamiltonian()
-
-        # this vectorized logic can be  replaced
-        #j = np.arange(nbas)
-        #H_mat[j, j] = H_mat[j, j] + V_potential(x[j + 1], time)  #  Potential added on diagonal
-        #
-        # By this logic for potential functions V_potential() that don't vectorize properly
-        #
-        for j in range(nbas):
-            H_mat[j, j] = H_mat[j, j] + V_potential(x[j + 1], time)  #  Potential added on diagonal
-
-      =======ECS FEM-DVR class library ============
-
-The directory DVR contains two .py files with two distinct class
-libraries
-
-DVRHelper.py
-ECS_DVRHelper.py
-
-Although the routines have the same names, the ones in ECS_DVRHelper
-are specific to the implementation of ECS.  The comments in
-ECS_DVRHelper.py describe the status of the implementation, which
-is currently coded only for propagation on a single potential curve.
-
