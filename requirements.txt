@@ -9,6 +9,6 @@ pyparsing==2.4.7
 python-dateutil==2.8.1
 scipy==1.4.1
 six==1.15.0
-sympy==1.6
+sympy==1.6.2
 tornado==6.0.4
 sphinxcontrib-bibtex
