@@ -17,7 +17,7 @@
 
         Potentials defined here:
             (1) Morse potential for :math:`H_2`
-            (2) Bernstein fit of Kolos and Wolneiwicz potential with :math:`\\frac{1}{R^6}`, :math:`\\frac{1}{R^8}`, :math:`\\frac{1}{R^{10}}` asymptotic behavior -- Gives near spectroscopic accuracy used in :cite:`TURNER1982127`, results there are reproduced by this code.
+            (2) Bernstein fit of Kolos and Wolneiwicz potential with :math:`\\frac{1}{R^6}`, :math:`\\frac{1}{R^8}`, :math:`\\frac{1}{R^{10}}` asymptotic behavior -- Gives near spectroscopic accuracy used in :cite:`TURNER1982127_1`, results there are reproduced by this code.
 
 References
 ----------
