@@ -68,9 +68,9 @@ Features
      <img src=docs/_static/images/DVR.png width="800px;" height="400px;" alt=""/>
    </p>
 
-This package offers a few toy problems out of the box found in the
-examples directory. There you will find example scripts implementing
-time-independent and time-dependent calculations of H_2.
+A few toy problems can be found in the examples directory. There
+you will find example scripts implementing time-independent and
+time-dependent calculations of H_2.
 
 Documentation
 ==============
