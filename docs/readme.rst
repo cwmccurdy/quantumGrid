@@ -1,9 +1,17 @@
 About
 =====
-TODO: Go into details!!!
-
 quantumGrid is a package for solving a 1-D Schrödinger equation for an
-arbitrary potential.
+arbitrary potential on any interval. The heart of this package is using
+a Finite Element Method with a Discrete Variable Representation
+(FEM-DVR) grid to solve the time-dependent or time-independent
+Schrödinger equation. This grid provides a compact supported foundation
+for numerically accurate integration and also allows for a natural
+application of outgoing scattering boundary conditions by adding a complex
+tail as the last finite element of the FEM-DVR grid, called *exterir
+complex scaling* (ECS). Therefore, this grid can be applied to
+scattering problems where the resonances become square integrable
+under this complex rotation of the Hamiltonian.
+
 
 Motivation
 ==========
@@ -14,11 +22,6 @@ Finite Element Method - Discrete Variable Representation (FEM-DVR) grid
 for solving the Schrödinger equation and simple scattering problems, we
 wanted to go open source and provide this numerical tool for others in
 the name of science!
-
-
-For time propagation, we recommend using Intel optimized libraries.
-Using the Crank-Nicolson propagator does enforce unitarity but is
-relatively slow. This link walks through the setup:
 
 Contributors ✨
 ===============

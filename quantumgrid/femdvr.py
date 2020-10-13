@@ -33,10 +33,9 @@ from numpy import (
 from sympy.integrals.quadrature import gauss_lobatto
 
 
-class scatterGrid(object):
-    def __init__(
-        self, n_order, FEM_boundaries, Mass=1, Complex_scale=1, R0_scale=0.0
-    ):
+class FEM_DVR(object):
+
+    def __init__(self, n_order, FEM_boundaries, Mass=1, Complex_scale=1, R0_scale=0.0):
         """Constructor method
         Builds 1D  FEM DVR grid and kinetic energy matrix representation in
         normalized FEM DVR basis of shape functions and bridging functions
@@ -832,4 +831,4 @@ class scatterGrid(object):
         self.KE_mat = (1.0 / reduced_mass) * self.KE_mat
 
     def hello_world(self):
-        print("HelloWorld from quantumgridGrid class!")
+        print("HelloWorld from FEM_DVR class!")
