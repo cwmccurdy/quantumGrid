@@ -444,5 +444,5 @@ So :math:`\vec{\psi} (t+\Delta)^\dagger \cdot \vec{\psi}(t+\Delta)= \vec{\psi}(t
 References
 ----------
 
-.. bibliography:: _static/refs.bib
+.. bibliography:: _static/refs_background.bib
   :style: unsrt
