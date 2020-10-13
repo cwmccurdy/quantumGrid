@@ -1,7 +1,6 @@
 This directory contains two examples using the FEM_DVR class
 library that implements Exterior Complex Scaling (ECS) using the
-Finite Element Discrete Variable Representation numerical methods and
-also using the Potential class.
+Finite Element Discrete Variable Representation numerical methods.
 
 Both examples for distribution are for H2 using the accurate potential
 curve fit of Waech and Bernstein (referenced in the Turner-McCurdy
