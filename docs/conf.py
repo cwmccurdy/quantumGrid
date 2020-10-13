@@ -42,6 +42,9 @@ extensions = [
 # Needed to document __init__ in classes
 autoclass_content = 'both'
 
+# Needed to have nice unicode characters in docs
+latex_engine = 'xelatex'
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
