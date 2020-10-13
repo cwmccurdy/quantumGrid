@@ -7,9 +7,6 @@ curve fit of Waech and Bernstein (referenced in the Turner-McCurdy
 paper below) T. G. Waech R.B. Bernstein, J. Chem. Phys. 46 (1967)
 4905.
 
-ECS_FEMDVR_diatomic_time_dep_vibration_H2.py
-ECS_FEMDVR_diatomic_time_indep_vibration_H2.py
-
 The Time-independent example reproduces a Figure 2 of Julia Turner
 and C. William McCurdy, Chemical Physics 71(1982) 127-133 of the
 resonace wave function for rotational angular momentum j = 17, which
