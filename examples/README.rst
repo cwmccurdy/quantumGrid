@@ -1,16 +1,13 @@
-                      CWM 4-1-2020
-         Small changes relevant to the O2 example 6-4-2020
-
-This directory contains two examples using the ECS_DVRHelper class
+This directory contains two examples using the FEM_DVR class
 library that implements Exterior Complex Scaling (ECS) using the
-Finite Element Discrete Variable Representation numerical methods
+Finite Element Discrete Variable Representation numerical methods.
 
 Both examples for distribution are for H2 using the accurate potential
 curve fit of Waech and Bernstein (referenced in the Turner-McCurdy
 paper below) T. G. Waech R.B. Bernstein, J. Chem. Phys. 46 (1967)
 4905.
 
-ECS_FEMDVR_diatomic_time_dep_vibration_H2.py    
+ECS_FEMDVR_diatomic_time_dep_vibration_H2.py
 ECS_FEMDVR_diatomic_time_indep_vibration_H2.py
 
 The Time-independent example reproduces a Figure 2 of Julia Turner
@@ -28,20 +25,20 @@ Plotting output from both examples is written in ./Plot_Output
 while .dat files are written in this directory.  Spectrum.dat
 contains the eigenvalues of the ECS scaled Hamiltonian.
 
-****Not for distribution, another example relevant to the 
+****Not for distribution, another example relevant to the
 question of python vectorization***
 
 O2+ catiom  example from the collaboration with Leone/Neumark Lab is in
 
 ECS_FEMDVR_April3_O2+cstate_vibration.py
 
-It computes the complex spectrum using ECS of resonances that 
+It computes the complex spectrum using ECS of resonances that
 decay by tunneling in the c state of the O2+ cation.
-The resonance lifetime of ~110 fs of the one in the example is 
+The resonance lifetime of ~110 fs of the one in the example is
 close to the experimental measurement.
 
-The point of including this example here is that its potential, 
-represented by a cubic spline interpolation, doesn't seem to 
+The point of including this example here is that its potential,
+represented by a cubic spline interpolation, doesn't seem to
 vectorize properly and so the ECS_DVRHelper.py library had the following
 lines for a vectorized build of the potential commented and replaced
 in Hamiltonian()

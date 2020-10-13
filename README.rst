@@ -70,8 +70,7 @@ Features
 
 This package offers a few toy problems out of the box found in the
 examples directory. There you will find example scripts implementing
-time-independent and time-dependent calculations of H_2 and
-a calculation for the O_2^+ molecule.
+time-independent and time-dependent calculations of H_2.
 
 Documentation
 ==============
