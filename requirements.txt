@@ -11,3 +11,4 @@ scipy==1.4.1
 six==1.15.0
 sympy==1.6
 tornado==6.0.4
+sphinxcontrib-bibtex

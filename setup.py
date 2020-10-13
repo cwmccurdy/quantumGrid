@@ -42,7 +42,7 @@ setup(
     include_package_data=True,
     keywords='quantumgrid',
     name='quantumgrid',
-    packages=find_packages(include=['quantumgrid', 'quantumgrid.*']),
+    packages=find_packages(include=['quantumgrid', 'femdvr.py', 'potential.py']),
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
