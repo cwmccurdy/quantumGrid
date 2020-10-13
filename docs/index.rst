@@ -20,6 +20,7 @@ Brought to you by the AMO theory group at Berkeley National Lab.
    installation
    background
    usage
+   examples
    modules
    contributing
    authors
