@@ -56,9 +56,7 @@ Plot_Output = path + "/Plot_Output"
 if os.path.exists(Plot_Output):
     print("Directory for wave function plots already exists", Plot_Output)
 else:
-    print(
-        "Attempting to create directory for wave function plots ", Plot_Output
-    )
+    print("Attempting to create directory for wave function plots ", Plot_Output)
     try:
         os.mkdir(Plot_Output)
     except OSError:
@@ -122,9 +120,7 @@ x_Plot = []
 pot_Plot = []
 for j in range(0, fem_dvr.nbas):
     x_Plot.append(np.real(fem_dvr.x_pts[j + 1]))
-    pot_Plot.append(
-        np.real(pertubation.V_Bernstein(fem_dvr.x_pts[j + 1], time))
-    )
+    pot_Plot.append(np.real(pertubation.V_Bernstein(fem_dvr.x_pts[j + 1], time)))
 plt.suptitle("V(x) at DVR basis function nodes", fontsize=14, fontweight="bold")
 string = "V"
 plt.plot(x_Plot, pot_Plot, "ro", label=string)
@@ -181,9 +177,7 @@ for i in range(0, n_energy):
 # pick one of the bound states of Morse Potential to plot
 # numbering can depend on numpy and python installation that determines
 # behavior of the linear algebra routines.
-n_Plot = (
-    n_energy - 1
-)  # This is generally the highest energy continuum eigenvalue
+n_Plot = n_energy - 1  # This is generally the highest energy continuum eigenvalue
 n_Plot = 426
 wfcnPlot = []
 for j in range(0, fem_dvr.nbas):
@@ -260,14 +254,10 @@ file_opened = open(filename, "w")
 print_points = len(x_Plot_array)
 print("x_Plot_array shape ", print_points)
 for i in range(print_points):
-    free_wave = (2.0 * np.sqrt(mu / k_momentum)) * np.sin(
-        k_momentum * x_Plot_array[i]
-    )
+    free_wave = (2.0 * np.sqrt(mu / k_momentum)) * np.sin(k_momentum * x_Plot_array[i])
     # for partial width gamma
     integrand = (
-        Psi_plot_array[i]
-        * pertubation.V_Bernstein(x_Plot_array[i], time)
-        * free_wave
+        Psi_plot_array[i] * pertubation.V_Bernstein(x_Plot_array[i], time) * free_wave
     )
     print(
         np.real(x_Plot_array[i]),
@@ -459,9 +449,7 @@ def animate(i):
     #  wouldn't recompute everything at each frame, which is very slow...
     #
     # ==============================================================================
-    time_string = str(
-        times_array[i] * 24.189 / 1000.0
-    )  # string for a plot label
+    time_string = str(times_array[i] * 24.189 / 1000.0)  # string for a plot label
     re_array = np.real(Psi_plot_time_array[i])
     im_array = np.imag(Psi_plot_time_array[i])
     abs_array = np.abs(Psi_plot_time_array[i])
@@ -480,9 +468,7 @@ fig = plt.figure()
 ymax = 1.25
 xmin = x_Plot[0]
 xmax = 20.0
-ax = fig.add_subplot(
-    111, autoscale_on=False, xlim=(xmin, xmax), ylim=(-ymax, +ymax)
-)
+ax = fig.add_subplot(111, autoscale_on=False, xlim=(xmin, xmax), ylim=(-ymax, +ymax))
 (line,) = ax.plot([], [], "-r", lw=2)
 (line1,) = ax.plot([], [], "-r", lw=2)
 (line2,) = ax.plot([], [], "-b", lw=2)
