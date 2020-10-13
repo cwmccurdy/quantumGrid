@@ -24,7 +24,7 @@
 References
 ----------
 
-.. bibliography:: _static/refs_examples.bib
+.. bibliography:: _static/refs_examples2.bib
   :style: unsrt
 """
 # preliminaries to invoke SciPy linear algebra functions
