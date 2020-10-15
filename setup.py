@@ -4,49 +4,23 @@
 
 from setuptools import setup, find_packages
 
-with open("Pypi_README.rst") as readme_file:
+with open("README.rst") as readme_file:
     readme = readme_file.read()
 
 with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
-# with open("requirements.txt") as f:
-#     requirements = f.read().splitlines()
-
-# with open("requirements_dev.txt") as f:
-#     requirements_dev = f.read().splitlines()
-
 requirements = [
-    "certifi==2020.6.20",
-    "cycler==0.10.0",
-    "fastcache==1.1.0",
-    "kiwisolver==1.2.0",
-    "matplotlib==3.3.2",
-    "mpmath==1.1.0",
-    "numpy==1.19.2",
-    "pyparsing==2.4.7",
-    "python-dateutil==2.8.1",
-    "scipy==1.5.2",
-    "six==1.15.0",
-    "sympy==1.6.2",
-    "tornado==6.0.4",
-    "Click==7.1.2",
-    "Sphinxcontrib-bibtex",
-]
-requirements_dev = [
-    "pip==20.2.3",
-    "bump2version==1.0.1",
-    "wheel==0.35.1",
-    "flake8==3.8.4",
-    "tox==3.20.1",
-    "coverage==5.3",
-    "Sphinx==3.2.1",
-    "twine==3.2.0",
+    "Click>=7.0",
 ]
 
-setup_requirements = []
+setup_requirements = [
+    "pytest-runner",
+]
 
-test_requirements = ["pytest>=3"]
+test_requirements = [
+    "pytest>=3",
+]
 
 setup(
     author="Zachary Streeter",
@@ -84,6 +58,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/zstreeter/quantumgrid",
-    version="0.1",
+    version="0.0.1",
     zip_safe=False,
 )
