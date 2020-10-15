@@ -33,4 +33,4 @@ def test_command_line_interface():
     assert "quantumgrid.cli.main" in result.output
     help_result = runner.invoke(cli.main, ["--help"])
     assert help_result.exit_code == 0
-    assert "--help  Show this message and exit." in help_result.outputl
+    assert "--help  Show this message and exit." in help_result.output
