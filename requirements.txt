@@ -12,3 +12,4 @@ six==1.15.0
 sympy==1.6.2
 tornado==6.0.4
 Click==7.1.2
+Sphinxcontrib-bibtex
