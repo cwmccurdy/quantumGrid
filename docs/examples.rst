@@ -41,8 +41,8 @@ the well and a part that dissociates and vanishes on the ECS
 contour.
 
 Args:
-    number_of_time_intervals (int): First command line argument. Number of time intervals to perform the Crank-Nicolson propagation. Defaults to 300.
-    time_step (int): Second command line argument. Time step in the propagator to relax or restrict the calculation as needed. Defaults to 0.1 atu.
+  1) number_of_time_intervals (int): First command line argument. Number of time intervals to perform the Crank-Nicolson propagation. Defaults to 300.
+  2) time_step (int): Second command line argument. Time step in the propagator to relax or restrict the calculation as needed. Defaults to 0.1 atu.
 
 
 Potentials defined here:
