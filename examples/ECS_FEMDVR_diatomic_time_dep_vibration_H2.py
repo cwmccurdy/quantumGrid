@@ -1,5 +1,5 @@
 """
-    C.W. McCurdy 03/13/2020
+    C.W. McCurdy 03/13/2020 :bold:`Example Script`
     Time-dependent Exterior Complex Scaling (ECS) FEM-DVR example
     Uses femdvr.py and potential class.
 

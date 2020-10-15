@@ -1,6 +1,7 @@
 """
-    C.W. McCurdy 03/13/2020
-    Time-dependent Exterior Complex Scaling (ECS) FEM-DVR examplej
+    C.W. McCurdy 03/13/2020 :bold:`Example Script`
+
+    Time-dependent Exterior Complex Scaling (ECS) FEM-DVR example
     Uses femdvr.py and potential class.
 
     Finite Element Method - Discrete Variable Representation (FEM-DVR)
