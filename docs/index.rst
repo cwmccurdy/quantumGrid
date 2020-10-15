@@ -21,6 +21,7 @@ Brought to you by the AMO theory group at Berkeley National Lab.
    background
    usage
    modules
+   examples
    contributing
    authors
    history

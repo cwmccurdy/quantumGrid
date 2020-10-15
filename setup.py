@@ -40,8 +40,8 @@ setup(
     entry_points={
         "console_scripts": [
             "quantumgrid=quantumgrid.cli:main",
-            "ecs_femdvr_time_dep_h2=quantumgrid.ECS_FEMDVR_diatomic_time_dep_vibration_H2:main",
-            "ecs_femdvr_time_indep_h2=quantumgrid.ECS_FEMDVR_diatomic_time_indep_vibration_H2:main",
+            "ecs_femdvr_time_dep_h2=examples.ECS_FEMDVR_diatomic_time_dep_vibration_H2:main",
+            "ecs_femdvr_time_indep_h2=examples.ECS_FEMDVR_diatomic_time_indep_vibration_H2:main",
         ],
     },
     install_requires=requirements,

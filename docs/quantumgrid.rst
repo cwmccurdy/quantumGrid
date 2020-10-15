@@ -4,18 +4,10 @@ quantumgrid package
 Submodules
 ----------
 
-quantumgrid.ECS\_FEMDVR\_diatomic\_time\_dep\_vibration\_H2 module
-------------------------------------------------------------------
+quantumgrid.cli module
+----------------------
 
-.. automodule:: quantumgrid.ECS_FEMDVR_diatomic_time_dep_vibration_H2
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-quantumgrid.ECS\_FEMDVR\_diatomic\_time\_indep\_vibration\_H2 module
---------------------------------------------------------------------
-
-.. automodule:: quantumgrid.ECS_FEMDVR_diatomic_time_indep_vibration_H2
+.. automodule:: quantumgrid.cli
    :members:
    :undoc-members:
    :show-inheritance:

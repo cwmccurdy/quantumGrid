@@ -37,16 +37,18 @@ import os  # functions to manipulate files and directories
 
 import time as timeclock  # for timing parts of the calculation during debugging
 
-# Needed to import our classes
-# import sys
-
-# sys.path.append("../")
-
 # Importing our classes
 from quantumgrid.femdvr import FEM_DVR
 from quantumgrid.potential import Potential
 
-def main(args=None, function=None):
+import sys
+import click
+
+@click.argument('time_step', type=click.FLOAT, default=0.1, required=False)
+@click.argument('number_of_time_intervals', type=click.INT, default=300, required=False)
+
+@click.command()
+def main(number_of_time_intervals, time_step):
     #
     # ================ Make Directory for Plots if it's not there already =============
     #
@@ -306,17 +308,17 @@ def main(args=None, function=None):
     # d = 0.1746
     # omega = np.sqrt((2.e0/mu)*d*a**2)
     # T_revival = 4*np.pi*mu/a**2 # for the morse oscillator
-    # n_intervals = 25*np.int((tfinal-tinitial)*omega/(2.0*np.pi))
+    # number_of_time_intervals = 25*np.int((tfinal-tinitial)*omega/(2.0*np.pi))
     # print("T_revival = ",T_revival," atomic time units ",T_revival*24.1888/1000.0," femtoseconds")
     tfinal = 5000  # specified in atomic time units
-    n_intervals = 1
+    number_of_time_intervals = 1
     print(
         "\nOverall propagation will be from ",
         tinitial,
         " to ",
         tfinal,
         " atu in ",
-        n_intervals,
+        number_of_time_intervals,
         " intervals",
     )
     #
@@ -332,16 +334,16 @@ def main(args=None, function=None):
     x_Plot_time_array.append(x_Plot_array)
     Psi_plot_time_array.append(Psi_plot_array)
     #
-    #  Loop over n_intervals intervals that make up t = 0 to tfinal
+    #  Loop over number_of_time_intervals intervals that make up t = 0 to tfinal
     #
-    t_interval = (tfinal - tinitial) / n_intervals
+    t_interval = (tfinal - tinitial) / number_of_time_intervals
     # for H2 reduced mass, Deltat = 0.05 in Morse oscillator seems to work for 10s of fs
     # for D2 reduced mass, Deltat = 0.1 in Morse oscillator seems to work for at least 2 ps
     # based on comparison with time steps 5 to 10 times smaller
     time_step = 0.1  # atomic time units
     # time_step = 0.05  # atomic time units
     # time_step = 0.015  # atomic time units
-    for i_time_interval in range(0, n_intervals):
+    for i_time_interval in range(0, number_of_time_intervals):
         t_start = tinitial + i_time_interval * t_interval
         t_finish = tinitial + (i_time_interval + 1) * t_interval
         N_time_steps = np.int(t_interval / time_step)
@@ -440,7 +442,7 @@ def main(args=None, function=None):
         return line, time_text
 
 
-    nframes = n_intervals
+    nframes = number_of_time_intervals
 
 
     def animate(i):
