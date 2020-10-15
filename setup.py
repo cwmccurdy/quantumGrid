@@ -4,19 +4,16 @@
 
 from setuptools import setup, find_packages
 
-with open("README.rst") as readme_file:
+with open("Pypi_README.rst") as readme_file:
     readme = readme_file.read()
 
 with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
-requirements = [
-    "Click>=7.0",
-]
+with open("requirements.txt") as requirements_file:
+    requirements = requirements_file.read()
 
-setup_requirements = [
-    "pytest-runner",
-]
+setup_requirements = []
 
 test_requirements = [
     "pytest>=3",
@@ -52,12 +49,17 @@ setup(
     keywords="quantumgrid",
     name="quantumgrid",
     packages=find_packages(
-        include=["quantumgrid", "femdvr.py", "potential.py"]
+        include=[
+            "quantumgrid",
+            "femdvr.py",
+            "potential.py",
+            "examples",
+        ]
     ),
     setup_requires=setup_requirements,
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/zstreeter/quantumgrid",
-    version="0.0.2",
+    version="0.16",
     zip_safe=False,
 )

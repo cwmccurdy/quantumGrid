@@ -26,6 +26,9 @@ Example:
    Finds all eigenvalues of complex scaled Hamiltonian and
    plots any one of them, specified by n_Plot
 
+Args:
+  1) want_to_plot (bool): Optional command that turns on plotting; default is false.
+
 Potentials defined here:
   I) Morse potential for :math:`H_2`
   II) Bernstein fit of Kolos and Wolneiwicz potential with :math:`\frac{1}{R^6}`, :math:`\frac{1}{R^8}`, :math:`\frac{1}{R^{10}}` asymptotic behavior -- Gives near spectroscopic accuracy used in :cite:`TURNER1982127`, results there are reproduced by this code.
@@ -43,7 +46,8 @@ contour.
 Args:
   1) number_of_time_intervals (int): First command line argument. Number of time intervals to perform the Crank-Nicolson propagation. Defaults to 300.
   2) time_step (int): Second command line argument. Time step in the propagator to relax or restrict the calculation as needed. Defaults to 0.1 atu.
-
+  3) want_to_plot (bool): Optional command that turns on plotting; default is false.
+  4) want_to_animate (bool): Optional command that turns on animation; default is false.
 
 Potentials defined here:
    I) Morse potential for :math:`H_2`

@@ -1,4 +1,4 @@
-"""Finite Element Method -- Discrete Variable Representation (DVR) for
+"""Finite Eement Method -- Discrete Variable Representation (DVR) for
    1D Schroedinger equation using Gauss-Lobatto quadrature
    C. William McCurdy, Zachary Streeter, and Giuseppe Barbalinardo -- UC Davis
 

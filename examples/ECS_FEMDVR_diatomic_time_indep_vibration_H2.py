@@ -39,14 +39,23 @@ import time as timeclock  # for timing parts of the calculation during debugging
 
 # Needed to import our classes
 # import sys
-
 # sys.path.append("../")
 
-# Importing our classes
 from quantumgrid.femdvr import FEM_DVR
 from quantumgrid.potential import Potential
 
-def main(args=None, function=None):
+import sys
+import click
+
+
+@click.option(
+    "--want_to_plot",
+    type=click.BOOL,
+    default="False",
+    help="Set to True if you want to turn on plotting",
+)
+@click.command()
+def main(want_to_plot):
     #
     # ================ Make Directory for Plots if it's not there already =============
     #
@@ -58,7 +67,10 @@ def main(args=None, function=None):
     if os.path.exists(Plot_Output):
         print("Directory for wave function plots already exists", Plot_Output)
     else:
-        print("Attempting to create directory for wave function plots ", Plot_Output)
+        print(
+            "Attempting to create directory for wave function plots ",
+            Plot_Output,
+        )
         try:
             os.mkdir(Plot_Output)
         except OSError:
@@ -109,7 +121,11 @@ def main(args=None, function=None):
     scale_factor = np.exp(1j * 37.0 * np.pi / 180.0)
     R0 = 22.75
     fem_dvr = FEM_DVR(
-        n_order, FEM_boundaries, Mass=mu, Complex_scale=scale_factor, R0_scale=R0
+        n_order,
+        FEM_boundaries,
+        Mass=mu,
+        Complex_scale=scale_factor,
+        R0_scale=R0,
     )
     print("\nFEM-DVR basis of ", fem_dvr.nbas, " functions")
     #
@@ -125,25 +141,33 @@ def main(args=None, function=None):
     pot_Plot = []
     for j in range(0, fem_dvr.nbas):
         x_Plot.append(np.real(fem_dvr.x_pts[j + 1]))
-        pot_Plot.append(np.real(pertubation.V_Bernstein(fem_dvr.x_pts[j + 1], time)))
-    plt.suptitle("V(x) at DVR basis function nodes", fontsize=14, fontweight="bold")
-    string = "V"
-    plt.plot(x_Plot, pot_Plot, "ro", label=string)
-    plt.plot(x_Plot, pot_Plot, "-b")
-    plt.legend(loc="best")
-    plt.xlabel(" x ", fontsize=14)
-    plt.ylabel("V", fontsize=14)
-    print(
-        "\n Running from terminal, close figure window to proceed and make .pdf file of figure"
-    )
-    #   Insert limits if necessary
-    #   Generally comment this logic.  Here I am matching the Turner McCurdy Figure 2
-    # CWM: need to use float() to get plt.xlim to work to set x limits
-    ymax = float(0.05)
-    plt.ylim([-0.18, ymax])
-    # save plot to .pdf file
-    plt.savefig("Plot_Output/" + "Plot_potential" + ".pdf", transparent=False)
-    plt.show()
+        pot_Plot.append(
+            np.real(pertubation.V_Bernstein(fem_dvr.x_pts[j + 1], time))
+        )
+
+    if want_to_plot == True:
+        plt.suptitle(
+            "V(x) at DVR basis function nodes", fontsize=14, fontweight="bold"
+        )
+        string = "V"
+        plt.plot(x_Plot, pot_Plot, "ro", label=string)
+        plt.plot(x_Plot, pot_Plot, "-b")
+        plt.legend(loc="best")
+        plt.xlabel(" x ", fontsize=14)
+        plt.ylabel("V", fontsize=14)
+        print(
+            "\n Running from terminal, close figure window to proceed and make .pdf file of figure"
+        )
+        #   Insert limits if necessary
+        #   Generally comment this logic.  Here I am matching the Turner McCurdy Figure 2
+        # CWM: need to use float() to get plt.xlim to work to set x limits
+        ymax = float(0.05)
+        plt.ylim([-0.18, ymax])
+        # save plot to .pdf file
+        plt.savefig(
+            "Plot_Output/" + "Plot_potential" + ".pdf", transparent=False
+        )
+        plt.show()
     #
     # =============Build Hamiltonian (at t=0 if time-dependent)=================================
     #     Pass name of potential function explicitly here
@@ -182,7 +206,9 @@ def main(args=None, function=None):
     # pick one of the bound states of Morse Potential to plot
     # numbering can depend on numpy and python installation that determines
     # behavior of the linear algebra routines.
-    n_Plot = n_energy - 1  # This is generally the highest energy continuum eigenvalue
+    n_Plot = (
+        n_energy - 1
+    )  # This is generally the highest energy continuum eigenvalue
     n_Plot = 292
     wfcnPlot = []
     for j in range(0, fem_dvr.nbas):
@@ -209,9 +235,13 @@ def main(args=None, function=None):
             free_wave = (2.0 * np.sqrt(mu / k_momentum)) * np.sin(
                 k_momentum * fem_dvr.x_pts[j + 1]
             )
-            gamma_residue = gamma_residue + wfcnPlot[j] * pertubation.V_Bernstein(
+            gamma_residue = gamma_residue + wfcnPlot[
+                j
+            ] * pertubation.V_Bernstein(
                 fem_dvr.x_pts[j + 1], time
-            ) * free_wave * np.sqrt(fem_dvr.w_pts[j + 1])
+            ) * free_wave * np.sqrt(
+                fem_dvr.w_pts[j + 1]
+            )
     print("Complex symmetric inner product (psi|psi) is being used")
     print(
         "Norm of wave function from int psi^2 on contour being plotted is ",
@@ -229,57 +259,62 @@ def main(args=None, function=None):
     wfcnInitialPlot = np.zeros((fem_dvr.nbas), dtype=np.complex)
     for j in range(0, fem_dvr.nbas):
         Cinitial[j] = wfcnPlot[j]
-    #
-    # plot n_Plot'th eigenfunction
-    #
-    print(
-        "\n Plot Hamiltonian eigenfunction number ",
-        n_Plot,
-        " with energy ",
-        EigenVals[0, n_Plot],
-    )
-    tau = atu_to_fs / (-2.0 * np.imag(EigenVals[0, n_Plot]))
-    print("  Lifetime tau = 1/Gamma = ", tau, " fs")
-    number_string = str(n_Plot)
-    title = "Wavefunction number = " + number_string
-    wfn_plot_points = 2000
-    x_Plot_array, Psi_plot_array = fem_dvr.Plot_Psi(
-        Cinitial,
-        plot_title_string=title,
-        N_plot_points=wfn_plot_points,
-        make_plot=True,
-    )
-    #
-    #  Make data file for n_Plot'th eigenfunction
-    #  Psi and the integrand of the residue factors, gamma, of the free-free matrix element
-    #  of the full Green's function, as per
-    #
-    filename = "wavefunction" + number_string + ".dat"
-    file_opened = open(filename, "w")
-    print_points = len(x_Plot_array)
-    print("x_Plot_array shape ", print_points)
-    for i in range(print_points):
-        free_wave = (2.0 * np.sqrt(mu / k_momentum)) * np.sin(k_momentum * x_Plot_array[i])
-        # for partial width gamma
-        integrand = (
-            Psi_plot_array[i] * pertubation.V_Bernstein(x_Plot_array[i], time) * free_wave
-        )
+
+    if want_to_plot == True:
+        #
+        # plot n_Plot'th eigenfunction
+        #
         print(
-            np.real(x_Plot_array[i]),
-            "  ",
-            np.imag(x_Plot_array[i]),
-            "  ",
-            np.real(Psi_plot_array[i]),
-            "  ",
-            np.imag(Psi_plot_array[i]),
-            "  ",
-            np.real(integrand),
-            np.imag(integrand),
-            file=file_opened,
+            "\n Plot Hamiltonian eigenfunction number ",
+            n_Plot,
+            " with energy ",
+            EigenVals[0, n_Plot],
         )
+        tau = atu_to_fs / (-2.0 * np.imag(EigenVals[0, n_Plot]))
+        print("  Lifetime tau = 1/Gamma = ", tau, " fs")
+        number_string = str(n_Plot)
+        title = "Wavefunction number = " + number_string
+        wfn_plot_points = 2000
+        x_Plot_array, Psi_plot_array = fem_dvr.Plot_Psi(
+            Cinitial,
+            plot_title_string=title,
+            N_plot_points=wfn_plot_points,
+            make_plot=True,
+        )
+        #
+        #  Make data file for n_Plot'th eigenfunction
+        #  Psi and the integrand of the residue factors, gamma, of the free-free matrix element
+        #  of the full Green's function, as per
+        #
+        filename = "wavefunction" + number_string + ".dat"
+        file_opened = open(filename, "w")
+        print_points = len(x_Plot_array)
+        print("x_Plot_array shape ", print_points)
+        for i in range(print_points):
+            free_wave = (2.0 * np.sqrt(mu / k_momentum)) * np.sin(
+                k_momentum * x_Plot_array[i]
+            )
+            # for partial width gamma
+            integrand = (
+                Psi_plot_array[i]
+                * pertubation.V_Bernstein(x_Plot_array[i], time)
+                * free_wave
+            )
+            print(
+                np.real(x_Plot_array[i]),
+                "  ",
+                np.imag(x_Plot_array[i]),
+                "  ",
+                np.real(Psi_plot_array[i]),
+                "  ",
+                np.imag(Psi_plot_array[i]),
+                "  ",
+                np.real(integrand),
+                np.imag(integrand),
+                file=file_opened,
+            )
     #
     # exit()
-
 
     # ====================================================================================
     #
@@ -289,7 +324,11 @@ def main(args=None, function=None):
     # numbering can depend on numpy and python installation that determines
     # behavior of the linear algebra routines.
     n_Plot = 292
-    print("Calculating ", fem_dvr.nbas, " eigenvectors for plotting eigenfunctions")
+    print(
+        "Calculating ",
+        fem_dvr.nbas,
+        " eigenvectors for plotting eigenfunctions",
+    )
     EigenVals2, EigenVecs = LA.eig(H_mat, right=True, homogeneous_eigvals=True)
     wfcnPlot = []
     for j in range(0, fem_dvr.nbas):
@@ -314,40 +353,43 @@ def main(args=None, function=None):
     wfcnInitialPlot = np.zeros((fem_dvr.nbas), dtype=np.complex)
     for j in range(0, fem_dvr.nbas):
         Cinitial[j] = wfcnPlot[j]
-    #
-    # plot n_Plot'th eigenfunction
-    #
-    print(
-        "\n Plot Hamiltonian eigenfunction number ",
-        n_Plot,
-        " with energy ",
-        EigenVals[0, n_Plot],
-    )
-    number_string = str(n_Plot)
-    title = "Wavefunction number = " + number_string
-    wfn_plot_points = 1000
-    x_Plot_array, Psi_plot_array = fem_dvr.Plot_Psi(
-        Cinitial,
-        plot_title_string=title,
-        N_plot_points=wfn_plot_points,
-        make_plot=True,
-    )
-    #
-    filename = "wavefunction" + number_string + ".dat"
-    file_opened = open(filename, "w")
-    print_points = len(x_Plot_array)
-    # print("x_Plot_array shape ",print_points)
-    for i in range(print_points):
-        print(
-            np.real(x_Plot_array[i]),
-            "  ",
-            np.imag(x_Plot_array[i]),
-            "  ",
-            np.real(Psi_plot_array[i]),
-            "  ",
-            np.imag(Psi_plot_array[i]),
-            file=file_opened,
-        )
 
-if __name__ == '__main__':
+    if want_to_plot == True:
+        #
+        # plot n_Plot'th eigenfunction
+        #
+        print(
+            "\n Plot Hamiltonian eigenfunction number ",
+            n_Plot,
+            " with energy ",
+            EigenVals[0, n_Plot],
+        )
+        number_string = str(n_Plot)
+        title = "Wavefunction number = " + number_string
+        wfn_plot_points = 1000
+        x_Plot_array, Psi_plot_array = fem_dvr.Plot_Psi(
+            Cinitial,
+            plot_title_string=title,
+            N_plot_points=wfn_plot_points,
+            make_plot=True,
+        )
+        #
+        filename = "wavefunction" + number_string + ".dat"
+        file_opened = open(filename, "w")
+        print_points = len(x_Plot_array)
+        # print("x_Plot_array shape ",print_points)
+        for i in range(print_points):
+            print(
+                np.real(x_Plot_array[i]),
+                "  ",
+                np.imag(x_Plot_array[i]),
+                "  ",
+                np.real(Psi_plot_array[i]),
+                "  ",
+                np.imag(Psi_plot_array[i]),
+                file=file_opened,
+            )
+
+
+if __name__ == "__main__":
     main()

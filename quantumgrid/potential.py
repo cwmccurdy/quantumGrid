@@ -1,4 +1,5 @@
-"""Class for a more OOP interface to several potentials.
+"""
+Class for a more OOP interface to several potentials.
 """
 # Import  NumPy which is used to define pi, sqrt, array, .transpose etc. as
 import numpy as np
@@ -7,7 +8,6 @@ from scipy.interpolate import CubicSpline
 
 
 class Potential(object):
-
     def __init__(self, file=None):
         """Constructor method, added vectorized version of all the methods.
 
@@ -39,7 +39,9 @@ class Potential(object):
         self.vectorized_V_c_state = np.vectorize(self.V_c_state)
 
         if file is None:
-            print("Potential constructed without a file. Can only use analytic potential functions defined in the quantumgrid.potential class")
+            print(
+                "Potential constructed without a file. Can only use analytic potential functions defined in the quantumgrid.potential class"
+            )
         else:
             file_name_c_state = open(file, "r")
             data = np.loadtxt(file_name_c_state, delimiter=",")
