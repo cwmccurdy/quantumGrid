@@ -18,6 +18,8 @@ with open("requirements_dev.txt") as f:
 
 setup_requirements = []
 
+test_requirements = ["pytest>=3"]
+
 setup(
     author="Zachary Streeter",
     author_email="zlstreeter@lbl.gov",
@@ -51,6 +53,8 @@ setup(
         include=["quantumgrid", "femdvr.py", "potential.py"]
     ),
     setup_requires=setup_requirements,
+    test_suite="tests",
+    tests_require=test_requirements,
     url="https://github.com/zstreeter/quantumgrid",
     version="0.1",
     zip_safe=False,

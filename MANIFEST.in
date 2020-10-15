@@ -5,6 +5,7 @@ include LICENSE
 include README.rst
 include Pypi_README.rst
 
+recursive-include tests *
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
 
