@@ -55,7 +55,7 @@ templates_path = ["_templates"]
 source_suffix = ".rst"
 
 #So the modules aren't in alphabetical order by default
-autodoc_member_order = 'bysource'
+# autodoc_member_order = 'bysource'
 
 # The master toctree document.
 master_doc = "index"
