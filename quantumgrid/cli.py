@@ -1,4 +1,4 @@
-"""Console cript for quantumgrid."""
+"""Console script for quantumgrid."""
 import sys
 import click
 

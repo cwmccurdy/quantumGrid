@@ -16,7 +16,7 @@ These notes are an introduction to Discrete Variable Representations (DVRs) usin
 Introduction
 ------------
 
-These notes describe a method for solving the Schrödinger equation for a particle moving in one dimension with coordinate :math:`x` for :bold:`any` potential :math:`V (x)` on :bold:`any` interval of :math:`x`. The variational method of course provides a way to do so, but its application generally poses a practical problem we would like to overcome: If we expand the unknown wave function in :math:`H |\Psi\rangle = E |\Psi\rangle` in a finite set of basis functions
+Here we describe a method for solving the Schrödinger equation for a particle moving in one dimension with coordinate :math:`x` for :bold:`any` potential :math:`V (x)` on :bold:`any` interval of :math:`x`. The variational method of course provides a way to do so, but its application generally poses a practical problem we would like to overcome: If we expand the unknown wave function in :math:`H |\Psi\rangle = E |\Psi\rangle` in a finite set of basis functions
 
 .. math::
   |\Psi\rangle \approx \sum_{n=1}^N c_n |\varphi_n\rangle

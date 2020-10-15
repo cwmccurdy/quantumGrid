@@ -4,6 +4,14 @@ quantumgrid package
 Submodules
 ----------
 
+quantumgrid.cli module
+----------------------
+
+.. automodule:: quantumgrid.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 quantumgrid.femdvr module
 -------------------------
 

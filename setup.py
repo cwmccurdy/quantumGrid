@@ -4,23 +4,19 @@
 
 from setuptools import setup, find_packages
 
-with open("README.rst") as readme_file:
+with open("Pypi_README.rst") as readme_file:
     readme = readme_file.read()
 
 with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
-requirements = [
-    "Click>=7.0",
-]
+with open("requirements.txt") as f:
+    requirements = f.read().splitlines()
 
-setup_requirements = [
-    "pytest-runner",
-]
+with open("requirements_dev.txt") as f:
+    requirements_dev = f.read().splitlines()
 
-test_requirements = [
-    "pytest>=3",
-]
+setup_requirements = []
 
 setup(
     author="Zachary Streeter",
@@ -40,11 +36,14 @@ setup(
     entry_points={
         "console_scripts": [
             "quantumgrid=quantumgrid.cli:main",
+            "ecs_femdvr_time_dep_h2=quantumgrid.ECS_FEMDVR_diatomic_time_dep_vibration_H2:main",
+            "ecs_femdvr_time_indep_h2=quantumgrid.ECS_FEMDVR_diatomic_time_indep_vibration_H2:main",
         ],
     },
     install_requires=requirements,
     license="MIT license",
     long_description=readme + "\n\n" + history,
+    long_description_content_type="text/x-rst",
     include_package_data=True,
     keywords="quantumgrid",
     name="quantumgrid",
@@ -52,9 +51,7 @@ setup(
         include=["quantumgrid", "femdvr.py", "potential.py"]
     ),
     setup_requires=setup_requirements,
-    test_suite="tests",
-    tests_require=test_requirements,
     url="https://github.com/zstreeter/quantumgrid",
-    version="0.0.1",
+    version="0.1",
     zip_safe=False,
 )
