@@ -37,6 +37,10 @@ import os  # functions to manipulate files and directories
 
 import time as timeclock  # for timing parts of the calculation during debugging
 
+# Needed to import our classes
+# import sys
+# sys.path.append("../")
+
 # Importing our classes
 from quantumgrid.femdvr import FEM_DVR
 from quantumgrid.potential import Potential
@@ -71,19 +75,21 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
     print("The current working directory is %s" % path)
     # define the name of the directory to be created
     Plot_Output = path + "/Plot_Output"
-    if os.path.exists(Plot_Output):
-        print("Directory for wave function plots already exists", Plot_Output)
-    else:
-        print(
-            "Attempting to create directory for wave function plots ",
-            Plot_Output,
-        )
-        try:
-            os.mkdir(Plot_Output)
-        except OSError:
-            print("Creation of the directory %s failed" % Plot_Output)
+
+    if want_to_plot == True:
+        if os.path.exists(Plot_Output):
+            print("Directory for wave function plots already exists", Plot_Output)
         else:
-            print("Successfully created the directory %s " % Plot_Output)
+            print(
+                "Attempting to create directory for wave function plots ",
+                Plot_Output,
+            )
+            try:
+                os.mkdir(Plot_Output)
+            except OSError:
+                print("Creation of the directory %s failed" % Plot_Output)
+            else:
+                print("Successfully created the directory %s " % Plot_Output)
     # =====================================FEM_DVR===================================
     #  Set up the FEM DVR grid given only the Finite Element boundaries and order
     #  of Gauss Lobatto quadrature,  and compute the Kinetic Energy matrix for
@@ -247,10 +253,13 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
                 fem_dvr.w_pts[j + 1]
             )
     print("Complex symmetric inner product (psi|psi) is being used")
-    print(
-        "Norm of wave function from int psi^2 on contour being plotted is ",
-        np.sqrt(norm_squared),
-    )
+
+    if want_to_plot == True:
+        print(
+            "Norm of wave function from int psi^2 on contour being plotted is ",
+            np.sqrt(norm_squared),
+        )
+
     print(" For this state the asymptotic value of k = ", k_momentum)
     print(
         "gamma from int = ",
@@ -555,6 +564,16 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
         anim.save("Plot_Output/H2_wavepacket.mp4")
         plt.show()
         print("done")
+
+    if want_to_plot == False:
+        print(
+            "\n\nSet the command line option want_to_plot=True to see figures and create plotting directory.\n\n"
+        )
+
+    if want_to_animate == False:
+        print(
+            "Set the command line option want_to_animate=True to see animation.\n\n"
+        )
 
 
 if __name__ == "__main__":

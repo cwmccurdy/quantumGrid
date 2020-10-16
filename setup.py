@@ -37,8 +37,8 @@ setup(
     entry_points={
         "console_scripts": [
             "quantumgrid=quantumgrid.cli:main",
-            "ecs_femdvr_time_dep_h2=examples.ECS_FEMDVR_diatomic_time_dep_vibration_H2:main",
-            "ecs_femdvr_time_indep_h2=examples.ECS_FEMDVR_diatomic_time_indep_vibration_H2:main",
+            "ecs_femdvr_time_dep_h2=quantumgrid_examples.ECS_FEMDVR_diatomic_time_dep_vibration_H2:main",
+            "ecs_femdvr_time_indep_h2=quantumgrid_examples.ECS_FEMDVR_diatomic_time_indep_vibration_H2:main",
         ],
     },
     install_requires=requirements,
@@ -53,13 +53,13 @@ setup(
             "quantumgrid",
             "femdvr.py",
             "potential.py",
-            "examples",
+            "quantumgrid_examples",
         ]
     ),
     setup_requires=setup_requirements,
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/zstreeter/quantumgrid",
-    version="0.16",
+    version="0.0.2",
     zip_safe=False,
 )

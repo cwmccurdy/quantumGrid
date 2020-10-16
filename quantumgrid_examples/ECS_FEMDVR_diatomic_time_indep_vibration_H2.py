@@ -64,19 +64,23 @@ def main(want_to_plot):
     print("The current working directory is %s" % path)
     # define the name of the directory to be created
     Plot_Output = path + "/Plot_Output"
-    if os.path.exists(Plot_Output):
-        print("Directory for wave function plots already exists", Plot_Output)
-    else:
-        print(
-            "Attempting to create directory for wave function plots ",
-            Plot_Output,
-        )
-        try:
-            os.mkdir(Plot_Output)
-        except OSError:
-            print("Creation of the directory %s failed" % Plot_Output)
+
+    if want_to_plot == True:
+        if os.path.exists(Plot_Output):
+            print(
+                "Directory for wave function plots already exists", Plot_Output
+            )
         else:
-            print("Successfully created the directory %s " % Plot_Output)
+            print(
+                "Attempting to create directory for wave function plots ",
+                Plot_Output,
+            )
+            try:
+                os.mkdir(Plot_Output)
+            except OSError:
+                print("Creation of the directory %s failed" % Plot_Output)
+            else:
+                print("Successfully created the directory %s " % Plot_Output)
     # =====================================FEM_DVR===================================
     #  Set up the FEM DVR grid given only the Finite Element boundaries and order
     #  of Gauss Lobatto quadrature,  and compute the Kinetic Energy matrix for
@@ -133,9 +137,12 @@ def main(want_to_plot):
     pertubation = Potential()
     # ==================================================================================
     #  Plot potential on the DVR grid points on which the wavefunction is defined
-    print("\n Plot potential ")
-    print("Test V", pertubation.V_Bernstein(5.0 + 0.0 * 1j, 0.0))
-    print("Test V", pertubation.V_Bernstein(10.0 + 0.5 * 1j, 0.0))
+
+    if want_to_plot == True:
+        print("\n Plot potential ")
+        print("Test V", pertubation.V_Bernstein(5.0 + 0.0 * 1j, 0.0))
+        print("Test V", pertubation.V_Bernstein(10.0 + 0.5 * 1j, 0.0))
+
     time = 0.0
     x_Plot = []
     pot_Plot = []
@@ -243,10 +250,11 @@ def main(want_to_plot):
                 fem_dvr.w_pts[j + 1]
             )
     print("Complex symmetric inner product (psi|psi) is being used")
-    print(
-        "Norm of wave function from int psi^2 on contour being plotted is ",
-        np.sqrt(norm_squared),
-    )
+    if want_to_plot == True:
+        print(
+            "Norm of wave function from int psi^2 on contour being plotted is ",
+            np.sqrt(norm_squared),
+        )
     print(" For this state the asymptotic value of k = ", k_momentum)
     print(
         "gamma from int = ",
@@ -324,11 +332,13 @@ def main(want_to_plot):
     # numbering can depend on numpy and python installation that determines
     # behavior of the linear algebra routines.
     n_Plot = 292
-    print(
-        "Calculating ",
-        fem_dvr.nbas,
-        " eigenvectors for plotting eigenfunctions",
-    )
+
+    if want_to_plot == True:
+        print(
+            "Calculating ",
+            fem_dvr.nbas,
+            " eigenvectors for plotting eigenfunctions",
+        )
     EigenVals2, EigenVecs = LA.eig(H_mat, right=True, homogeneous_eigvals=True)
     wfcnPlot = []
     for j in range(0, fem_dvr.nbas):
@@ -344,10 +354,12 @@ def main(want_to_plot):
     norm_squared = 0.0
     for j in range(0, fem_dvr.nbas):
         norm_squared = norm_squared + (wfcnPlot[j]) ** 2
-    print(
-        "Norm of wave function from int psi^2 on contour being plotted is ",
-        np.sqrt(norm_squared),
-    )
+
+    if want_to_plot == True:
+        print(
+            "Norm of wave function from int psi^2 on contour being plotted is ",
+            np.sqrt(norm_squared),
+        )
     # Plot wave function -- It must be type np.complex
     Cinitial = np.zeros((fem_dvr.nbas), dtype=np.complex)
     wfcnInitialPlot = np.zeros((fem_dvr.nbas), dtype=np.complex)
@@ -389,6 +401,11 @@ def main(want_to_plot):
                 np.imag(Psi_plot_array[i]),
                 file=file_opened,
             )
+
+    if want_to_plot == False:
+        print(
+            "\n\n Set the command line option want_to_plot=True to see figures and create plotting directory.\n\n"
+        )
 
 
 if __name__ == "__main__":

@@ -11,7 +11,18 @@
 Examples
 ========
 
-There are two example scripts that come with quantumGrid: :bolditalic:`ecs_femdvr_time_indep_h2` for a time independent calculation and :bolditalic:`ecs_femdvr_time_dep_h2` for a time dependent calculation. Once quantumGrid is installed in your local environment, these scripts can be called without typing "python".
+There are two example scripts that come with quantumGrid: :bolditalic:`ecs_femdvr_time_indep_h2` for a time independent calculation and :bolditalic:`ecs_femdvr_time_dep_h2` for a time dependent calculation. Once quantumGrid is installed in your local environment, these scripts can be called without typing "python". To see command line options for both scripts, just the help command:
+
+.. code-block:: console
+
+    $ ecs_femdvr_time_dep_h2 --help
+
+For example, to turn on plotting for the time independent example run the script with the plotting option:
+
+.. code-block:: console
+
+    $ ecs_femdvr_time_dep_h2 --want_to_plot=True
+
 
 ecs_femdvr_time_indep_h2
 ------------------------
@@ -56,13 +67,13 @@ Potentials defined here:
 Modifying Scripts
 -----------------
 
-The actual names of these two example scripts are ECS_FEMDVR_diatomic_time_indep_vibration_H2.py and ECS_FEMDVR_diatomic_time_dep_vibration_H2.py. If quantumgrid was installed using the conda instruction then the scripts should be in :italic:`/Anaconda/envs/YOUR_ENVIRONMENT_NAME/lib/python3.7/site-packages/quantumgrid`. If you are in a Unix environment then you can simply find them with the following command:
+The actual names of these two example scripts are ECS_FEMDVR_diatomic_time_indep_vibration_H2.py and ECS_FEMDVR_diatomic_time_dep_vibration_H2.py. If you downloaded the source package from github, then these examples are in the examples directory. If quantumgrid was installed using the conda instruction then the scripts should be in :italic:`/Anaconda/envs/YOUR_ENVIRONMENT_NAME/lib/python3.7/site-packages/quantumgrid_examples`. If you are in a Unix environment then you can simply find them with the following command:
 
 .. code-block:: console
 
     $ locate ECS_FEMDVR_diatomic_time_dep_vibration_H2
 
-Once found you can modify your script however you like!
+At any rate, once found you can modify your script however you like!
 
 References
 ----------
