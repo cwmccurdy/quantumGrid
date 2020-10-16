@@ -71,7 +71,7 @@ The actual names of these two example scripts are ECS_FEMDVR_diatomic_time_indep
 
 .. code-block:: console
 
-    $ locate ECS_FEMDVR_diatomic_time_dep_vibration_H2
+    $ locate ECS_FEMDVR_diatomic_time_dep_vibration_H2.py
 
 At any rate, once found you can modify your script however you like!
 
