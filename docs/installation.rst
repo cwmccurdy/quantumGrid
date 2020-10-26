@@ -50,9 +50,6 @@ Next we build our package:
 .. code-block:: console
 
     $ conda-build quantumgrid
-    $ conda build purge
-
-The second command is just for clean up.
 
 This may take a minute but once it's done, you should have a local package of quantumgrid in a bld directory (short for build) that you can then install into any conda environment you create! Here are the commands to install the quantumgrid package to a new conda environment named "qtest":
 
