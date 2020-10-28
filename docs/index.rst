@@ -12,6 +12,9 @@
 
 Brought to you by the AMO theory group at Berkeley National Lab.
 
+Note:
+  The image above is for FEM-DVR grid in 2D, which needs to be implemented.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
