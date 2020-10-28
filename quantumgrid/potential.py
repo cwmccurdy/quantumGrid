@@ -188,7 +188,7 @@ class Potential(object):
             from a SA-MCSCF on the ion using an aug-cc-vTZP basis set. This was for a
             cStateDCalc.csv file, which is NOT provided in the released package.
             Therefore, this potential is just a scaffold to implement a general
-            interpolation scheme and shouldn't be experimented with.
+            interpolation scheme and shouldn't be experimented with until then.
 
         Args:
             r_vals_c_state (ndarray): position values for potential to be
