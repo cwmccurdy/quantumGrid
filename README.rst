@@ -12,6 +12,9 @@
 
 brought to you by the AMO theory group at Berkeley National Lab
 
+Note:
+  The image above is for a scattered wave on a 2D FEM-DVR grid, which has not been implemented in the current package.
+
 
 .. image:: https://img.shields.io/pypi/v/quantumgrid.svg
         :target: https://pypi.python.org/pypi/quantumgrid
