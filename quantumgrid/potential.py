@@ -21,16 +21,14 @@ class Potential(object):
             vectorized_V_Bernstein (ndarray): Vectorized version of the
             Bernstein function
             vectorized_V_c_state (ndarray): Vectorized version of the c-state
-            interpolated function if the cStateDCalc.csv file is provided
-
-        Note:
-            At this point constants are for Lucchese 4/3/2020 calculation:
-            :math:`c ^4\Sigma_u^-` state of :math:`O_2^+` where the orbitals come from a SA-MCSCF
-            on the ion using an aug-cc-vTZP basis set.
+            interpolated function if the cStateDCalc.csv file, which is NOT
+            provided in the released package
 
         Todo:
             Add a general interpolation scheme so any file passed into this
-            class's constructor will work
+            class's constructor will work. Right now, only works for a
+            particular file that was tested in house and not released with
+            package.
 
         """
 
@@ -183,9 +181,14 @@ class Potential(object):
         Interpolate computed values using scipy CubicSpline
         :math:`\\frac{1}{R^4}` tail added matching value and finite diff
         derivative at :math:`R=5`
-        At this point constants are for Lucchese 4/3/2020 calculation:
-        c-4-Sigma-u-(-) state of O2+ where the orbitals come from a SA-MCSCF
-        on the ion using an aug-cc-vTZP basis set.
+
+        Note:
+            At this point constants are for Lucchese 4/3/2020 calculation:
+            :math:`c ^4\Sigma_u^-` state of :math:`O_2^+` where the orbitals come
+            from a SA-MCSCF on the ion using an aug-cc-vTZP basis set. This was for a
+            cStateDCalc.csv file, which is NOT provided in the released package.
+            Therefore, this potential is just a scaffold to implement a general
+            interpolation scheme and shouldn't be experimented with.
 
         Args:
             r_vals_c_state (ndarray): position values for potential to be
