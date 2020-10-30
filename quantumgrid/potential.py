@@ -16,13 +16,9 @@ class Potential(object):
              potential onto the dvr grid. Default to None
 
         Attributes:
-            vectorized_V_morse (ndarray): Vectorized version of the morse
-             function
-            vectorized_V_Bernstein (ndarray): Vectorized version of the
-            Bernstein function
-            vectorized_V_c_state (ndarray): Vectorized version of the c-state
-            interpolated function if the cStateDCalc.csv file, which is NOT
-            provided in the released package
+            vectorized_V_morse (ndarray): Vectorized version of the morse function
+            vectorized_V_Bernstein (ndarray): Vectorized version of the Bernstein function
+            vectorized_V_c_state (ndarray): Vectorized version of the c-state interpolated function of the cStateDCalc.csv file, which is NOT provided in the released package
 
         Todo:
             Add a general interpolation scheme so any file passed into this
