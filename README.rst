@@ -19,8 +19,8 @@ Note:
 .. image:: https://img.shields.io/pypi/v/quantumgrid.svg
         :target: https://pypi.python.org/pypi/quantumgrid
 
-.. image:: https://travis-ci.com/zstreeter/quantumgrid.svg?branch=master
-    :target: https://travis-ci.com/zstreeter/quantumGrid
+.. image:: https://travis-ci.com/zstreeter/quantumGrid.svg?branch=master
+        :target: https://travis-ci.com/zstreeter/quantumGrid
 
 .. image:: https://readthedocs.org/projects/quantumgrid/badge/?version=latest
         :target: https://quantumgrid.readthedocs.io/en/latest/?badge=latest
