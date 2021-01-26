@@ -1,8 +1,8 @@
-This directory contains two examples using the FEM_DVR class
+This directory contains four examples using the FEM_DVR class
 library that implements Exterior Complex Scaling (ECS) using the
 Finite Element Discrete Variable Representation numerical methods.
 
-Both examples for distribution are for H2 using the accurate potential
+Two examples are for H2 using the accurate potential
 curve fit of Waech and Bernstein (referenced in the Turner-McCurdy
 paper below) T. G. Waech R.B. Bernstein, J. Chem. Phys. 46 (1967)
 4905.
@@ -18,6 +18,10 @@ The Time-dependent example propagates an initially Gaussian wave
 packet that starts centered at a value of R just inward of the
 maximum in the potential V(R) +j(j+1)/2*\mu*R^2
 
-Plotting output from both examples is written in ./Plot_Output
+There are two examples that read in the files potcurve_CO_CISDT_ccpvDZ.dat
+and potcurve_CISD_H2_ccpvTZ.dat for finding the vibrational states of CO
+and H_2, respectively.
+
+Plotting output from all four examples is written in ./Plot_Output
 while .dat files are written in this directory.  Spectrum.dat
 contains the eigenvalues of the ECS scaled Hamiltonian.

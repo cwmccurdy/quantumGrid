@@ -11,7 +11,7 @@
 Examples
 ========
 
-There are two example scripts that come with quantumGrid: :bolditalic:`ecs_femdvr_time_indep_h2` for a time independent calculation and :bolditalic:`ecs_femdvr_time_dep_h2` for a time dependent calculation. Once quantumGrid is installed in your local environment, these scripts can be called without typing "python". To see command line options for both scripts, just the help command:
+There are four example scripts that come with quantumGrid: :bolditalic:`ecs_femdvr_time_indep_h2` for a time independent calculation and :bolditalic:`ecs_femdvr_time_dep_h2` for a time dependent calculation and two examples that calculate vibrational states of :math:`H_2` and CO called :bolditalic:`femdvr_vib_states_h2` and :bolditalic:`femdvr_vib_states_co`, respectively. Once quantumGrid is installed in your local environment, these scripts can be called without typing "python". To see command line options for both scripts, just use the help command:
 
 .. code-block:: console
 
@@ -64,10 +64,55 @@ Potentials defined here:
    I) Morse potential for :math:`H_2`
    II) Bernstein fit of Kolos and Wolneiwicz potential with :math:`\frac{1}{R^6}`, :math:`\frac{1}{R^8}`, :math:`\frac{1}{R^{10}}` asymptotic behavior -- Gives near spectroscopic accuracy used in :cite:`TURNER1982127`, results there are reproduced by this code.
 
+femdvr_vib_states_h2
+--------------------
+
+:math:`H_2` vibrational states using CI singles and doubles potential curve
+from Psi4.  This potential yields a :math:`n = 0 -> 1` excitation energy
+within a few wavenumbers of the value using the NIST values for
+constants of diatomic molecules for :math:`H_2` in the formula
+:math:`E_n = (n+\frac{1}{2})we - (n+\frac{1}{2})^2 wexe`, which is :math: `4158 cm^{-1}`
+Shows how to
+  i) Read in and interpolate a potential function known at discrete points
+  ii) Use DVRHelper class to build FEM-DVR grid
+  iii) Use DVRHelper class to build Hamiltonian in DVR basis
+  iv) Find eigenvalues and eigenvectors of Hamiltonian
+  v) Plot eigenfunctions of the Hamiltonian
+
+Args:
+  1) want_to_plot (bool): Optional command that turns on plotting; default is false.
+
+Potential read from file used here:
+   I) potcurve_CISD_H2_ccpvTZ.dat
+
+femdvr_vib_states_co
+--------------------
+
+CO vibrational states using CI singles, doubles and triples potential curve from Psi4.
+This potential gives a dissociation energy of :math:`~12.2` eV, not very good
+by comparison to the :math:`~11.1` eV experimental value.
+It yields a :math:`n = 0 -> 1` excitation energy of :math:`2207 cm^{-1}`
+compared with the value using the NIST values for
+constants of diatomic molecules for :math:`H_2` in the formula
+:math:`E_n = (n+1/2)we - (n+1/2)^2 wexe`, which is :math:`2143 cm^{-1}`
+So not quite spectroscopic accuracy.
+Shows how to
+  i) Read in and interpolate a potential function known at discrete points
+  ii) Use DVRHelper class to build FEM-DVR grid
+  iii) Use DVRHelper class to build Hamiltonian in DVR basis
+  iv) Find eigenvalues and eigenvectors of Hamiltonian
+  v) Plot eigenfunctions of the Hamiltonian
+
+Args:
+  1) want_to_plot (bool): Optional command that turns on plotting; default is false.
+
+Potential read from file used here:
+   I) potcurve_CO_CISDT_ccpvDZ.dat
+
 Modifying Scripts
 -----------------
 
-The actual names of these two example scripts are ECS_FEMDVR_diatomic_time_indep_vibration_H2.py and ECS_FEMDVR_diatomic_time_dep_vibration_H2.py. If you downloaded the source package from github, then these examples are in the examples directory. If quantumgrid was installed using the conda instruction then the scripts should be in :italic:`/Anaconda/envs/YOUR_ENVIRONMENT_NAME/lib/python3.7/site-packages/quantumgrid_examples`. If you are in a Unix environment then you can simply find them with the following command:
+The actual names of these four example scripts are ECS_FEMDVR_diatomic_time_indep_vibration_H2.py, ECS_FEMDVR_diatomic_time_dep_vibration_H2.py, H2_vib_states_FEM_DVR.py, and CO_vib_states_FEM_DVR.py. If you downloaded the source package from github, then these examples are in the examples directory. If quantumgrid was installed using the conda instruction then the scripts should be in :italic:`/Path/to/Anaconda/envs/YOUR_ENVIRONMENT_NAME/lib/python3.7/site-packages/quantumgrid_examples`. If you are in a Unix environment then you can simply find them with the following command:
 
 .. code-block:: console
 

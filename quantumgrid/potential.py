@@ -13,12 +13,15 @@ class Potential(object):
 
         Args:
             file (string, optional): The caller may provide a file to interpolate a
-             potential onto the dvr grid. Default to None
+             potential onto the dvr grid. The file must be in two tab separated
+             columns. Default to None
 
         Attributes:
             vectorized_V_morse (ndarray): Vectorized version of the morse function
             vectorized_V_Bernstein (ndarray): Vectorized version of the Bernstein function
             vectorized_V_c_state (ndarray): Vectorized version of the c-state interpolated function of the cStateDCalc.csv file, which is NOT provided in the released package
+            vectorized_V_Interpolated (ndarray): Vectorized version of the
+            interpolated function.
 
         Todo:
             Add a general interpolation scheme so any file passed into this
@@ -30,29 +33,33 @@ class Potential(object):
 
         self.vectorized_V_morse = np.vectorize(self.V_morse)
         self.vectorized_V_Bernstein = np.vectorize(self.V_Bernstein)
+        self.vectorized_V_ = np.vectorize(self.V_Bernstein)
         self.vectorized_V_c_state = np.vectorize(self.V_c_state)
+        self.vectorized_V_Interpolated = np.vectorize(self.V_Interpolated)
 
         if file is None:
             print(
                 "Potential constructed without a file. Can only use analytic potential functions defined in the quantumgrid.potential class"
             )
         else:
-            file_name_c_state = open(file, "r")
-            data = np.loadtxt(file_name_c_state, delimiter=",")
-            pot_len_c_state = data.shape[0]
+            file_name = open(file, "r")
+            data = np.loadtxt(file_name)
+            pot_len_state = data.shape[0]
             pot_columns = data.shape[1]
             print(
-                "Finished reading file with c state potential with ",
-                pot_len_c_state,
+                "Finished reading V file with ",
+                pot_len_state,
                 " rows and ",
                 pot_columns,
                 " columns",
             )
-            self.r_vals_c_state = np.empty(pot_len_c_state)
-            self.V_vals_c_state = np.empty(pot_len_c_state)
-            for i in range(0, pot_len_c_state):
-                self.r_vals_c_state[i] = data[i, 0]
-                self.V_vals_c_state[i] = data[i, 1]
+            self.r_data = np.empty(pot_len_state)
+            self.V_data = np.empty(pot_len_state)
+            for i in range(0, pot_len_state):
+                self.r_data[i] = data[i, 0]
+                self.V_data[i] = data[i, 1]
+
+            self.V_vals = CubicSpline(self.r_data, self.V_data)
 
     def V_morse(self, r, t=0.0):
         """
@@ -66,7 +73,7 @@ class Potential(object):
 
         .. math::
 
-         y = e^{(-a*(r-re))}
+            y = e^{(-a*(r-re))}
 
         This potential also defines parameters specifically for :math:`H_2`
 
@@ -88,9 +95,7 @@ class Potential(object):
         y = np.exp(-a * (r - re))
         # j value for centrifugal potential.  mu defined in main part of script above
         j = 0  # Morse potential has rotational predissociation resonances for some j
-        pot = d * (y ** 2 - 2.0 * y) + np.float(j * (j + 1)) / (
-            2.0 * mu * r ** 2
-        )
+        pot = d * (y ** 2 - 2.0 * y) + np.float(j * (j + 1)) / (2.0 * mu * r ** 2)
         return pot
 
     def V_Bernstein(self, r, t=0.0):
@@ -187,10 +192,6 @@ class Potential(object):
             interpolation scheme and shouldn't be experimented with until then.
 
         Args:
-            r_vals_c_state (ndarray): position values for potential to be
-                                        interpolated
-            V_vals_c_state (ndarray): Potential values interpolated on FEM-DVR
-                                        grid
             r (complex): FEM-DVR point where this potential is evaluated at
             t (int): Time dependence of this potential to simulate
                         turning on a field pertubation, for example. Defaults to
@@ -201,18 +202,35 @@ class Potential(object):
         """
         Hartree_to_eV = 27.211386245988  # NIST ref
 
-        cs = CubicSpline(self.r_vals_c_state, self.V_vals_c_state)
-        n_vals = self.r_vals_c_state.shape[0]
-        if self.r_vals_c_state[0] <= r and r <= self.r_vals_c_state[n_vals - 1]:
+        n_vals = self.r_data.shape[0]
+        if self.r_data[0] <= r and r <= self.r_data[n_vals - 1]:
             x = np.real(r)
-            pot = cs(x)
+            pot = self.V_vals(r)
         if np.real(r) > 5.0:
             pot = 20.26002003285 - 85.94654796874 / r ** 4
-        if np.real(r) < self.r_vals_c_state[0] and np.real(r) >= 1.5:
-            pot = cs(r)
+        if np.real(r) < self.r_data[0] and np.real(r) >= 1.5:
+            pot = self.V_vals(r)
         if np.real(r) < 1.5:
             print("r out of range in V_c_state ", r)
             exit()
         # interpolated value
         potential = (pot - 20.26002003285) / Hartree_to_eV
         return potential
+
+    def V_Interpolated(self, r, time):
+        """
+        Interpolated values using scipy CubicSpline
+
+        Note:
+            Requires a file of potential values to interpolate in this class's constructor!
+
+        Args:
+            r (complex): FEM-DVR point where this potential is evaluated at
+            t (int): Time dependence of this potential to simulate
+                        turning on a field pertubation, for example. Defaults to
+                        t=0.0
+
+        Returns:
+            pot (complex): potential value at the point r at the time t
+        """
+        return self.V_vals(r)
