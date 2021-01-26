@@ -39,11 +39,13 @@ extensions = [
     "sphinxcontrib.bibtex",
 ]
 
+bibtex_bibfiles = ["_static/refs_background.bib", "_static/refs_examples.bib"]
+
 # Needed to document __init__ in classes
-autoclass_content = 'both'
+autoclass_content = "both"
 
 # Needed to have nice unicode characters in docs
-latex_engine = 'xelatex'
+latex_engine = "xelatex"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -54,7 +56,7 @@ templates_path = ["_templates"]
 # source_suffix = ['.rst', '.md']
 source_suffix = ".rst"
 
-#So the modules aren't in alphabetical order by default
+# So the modules aren't in alphabetical order by default
 # autodoc_member_order = 'bysource'
 
 # The master toctree document.
@@ -157,9 +159,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, "quantumgrid", "quantumGrid Documentation", [author], 1)
-]
+man_pages = [(master_doc, "quantumgrid", "quantumGrid Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output ----------------------------------------

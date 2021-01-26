@@ -68,14 +68,15 @@ femdvr_vib_states_h2
 --------------------
 
 :math:`H_2` vibrational states using CI singles and doubles potential curve
-from Psi4.  This potential yields a :math:`n = 0 -> 1` excitation energy
+from Psi4.  This potential yields a :math:`n = 0 \rightarrow 1` excitation energy
 within a few wavenumbers of the value using the NIST values for
 constants of diatomic molecules for :math:`H_2` in the formula
-:math:`E_n = (n+\frac{1}{2})we - (n+\frac{1}{2})^2 wexe`, which is :math: `4158 cm^{-1}`
+:math:`E_n = (n+\frac{1}{2})w_e - (n+\frac{1}{2})^2 w_ex_e`, which is :math:`4158 cm^{-1}`.
+
 Shows how to
   i) Read in and interpolate a potential function known at discrete points
-  ii) Use DVRHelper class to build FEM-DVR grid
-  iii) Use DVRHelper class to build Hamiltonian in DVR basis
+  ii) Use FEMDVR class to build FEM-DVR grid
+  iii) Use FEMDVR class to build Hamiltonian in DVR basis
   iv) Find eigenvalues and eigenvectors of Hamiltonian
   v) Plot eigenfunctions of the Hamiltonian
 
@@ -89,17 +90,18 @@ femdvr_vib_states_co
 --------------------
 
 CO vibrational states using CI singles, doubles and triples potential curve from Psi4.
-This potential gives a dissociation energy of :math:`~12.2` eV, not very good
-by comparison to the :math:`~11.1` eV experimental value.
-It yields a :math:`n = 0 -> 1` excitation energy of :math:`2207 cm^{-1}`
+This potential gives a dissociation energy of :math:`~12.2 eV`, not very good
+by comparison to the :math:`~11.1 eV` experimental value.
+It yields a :math:`n = 0 \rightarrow 1` excitation energy of :math:`2207 cm^{-1}`
 compared with the value using the NIST values for
 constants of diatomic molecules for :math:`H_2` in the formula
-:math:`E_n = (n+1/2)we - (n+1/2)^2 wexe`, which is :math:`2143 cm^{-1}`
+:math:`E_n = (n+\frac{1}{2})w_e - (n+\frac{1}{2})^2 w_ex_e`, which is :math:`2143 cm^{-1}`
 So not quite spectroscopic accuracy.
+
 Shows how to
   i) Read in and interpolate a potential function known at discrete points
-  ii) Use DVRHelper class to build FEM-DVR grid
-  iii) Use DVRHelper class to build Hamiltonian in DVR basis
+  ii) Use FEMDVR class to build FEM-DVR grid
+  iii) Use FEMDVR class to build Hamiltonian in DVR basis
   iv) Find eigenvalues and eigenvectors of Hamiltonian
   v) Plot eigenfunctions of the Hamiltonian
 
