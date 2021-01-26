@@ -71,9 +71,11 @@ Features
      <img src=docs/_static/images/DVR.png width="800px;" height="400px;" alt=""/>
    </p>
 
-A few toy problems can be found in the examples directory. There
-you will find example scripts implementing time-independent and
-time-dependent calculations of molecular hydrogen.
+Following the documentation link below, a few toy problems can be found
+in the examples directory. There you will find example scripts
+implementing time-independent and time-dependent calculations of molecular
+hydrogen and two scripts for finding the vibrational states of molecular
+hydroden and carbon dioxide.
 
 Documentation
 ==============
