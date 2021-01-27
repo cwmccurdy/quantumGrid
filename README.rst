@@ -56,11 +56,11 @@ Motivation
 ==========
 
 This python package was created for a graduate course in time-dependent
-quantum mechanics at UC Davis. Given the generality and usefulness of a
-Finite Element Method - Discrete Variable Representation (FEM-DVR) grid
-for solving the Schrödinger equation and simple scattering problems, we
-wanted to go open source and provide this numerical tool for others in
-the name of science!
+quantum mechanics at UC Davis. Given the ease of programming in python,
+generality and usefulness of a Finite Element Method - Discrete
+Variable Representation (FEM-DVR) grid for solving the Schrödinger
+equation and simple scattering problems, we wanted to go open source
+and provide this numerical tool for others in the name of science!
 
 Features
 ========
