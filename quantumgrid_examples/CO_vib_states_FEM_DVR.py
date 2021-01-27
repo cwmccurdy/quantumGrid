@@ -173,8 +173,8 @@ def main(want_to_plot):
         x_Plot = []
         pot_Plot = []
         for j in range(0, n_vals_pot):
-            x_Plot.append(perturbation.r_data[j])
-            pot_Plot.append(perturbation.V_data[j])
+            x_Plot.append(np.real(perturbation.r_data[j]))
+            pot_Plot.append(np.real(perturbation.V_data[j]))
         plt.suptitle("V(r) interpolation", fontsize=14, fontweight="bold")
         string = "V input points"
         plt.plot(x_Plot, pot_Plot, "ro", label=string)
@@ -182,12 +182,12 @@ def main(want_to_plot):
         x_Plot = []
         pot_Plot = []
         Number_plot_points = 731
-        dx = (fem_dvr.x_pts[fem_dvr.nbas - 1] - fem_dvr.x_pts[0]) / float(
-            Number_plot_points - 1
-        )
+        dx = (
+            np.real(fem_dvr.x_pts[fem_dvr.nbas - 1]) - np.real(fem_dvr.x_pts[0])
+        ) / float(Number_plot_points - 1)
         time = 0.0  # dummy time in general call to potential function
         for j in range(0, Number_plot_points):
-            x = fem_dvr.x_pts[0] + j * dx
+            x = np.real(fem_dvr.x_pts[0]) + j * dx
             try:
                 x >= perturbation.r_data[0] and x <= perturbation.r_data[n_vals_pot - 1]
             except IndexError:

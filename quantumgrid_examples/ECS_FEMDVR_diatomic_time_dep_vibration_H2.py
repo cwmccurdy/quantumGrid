@@ -38,8 +38,9 @@ import os  # functions to manipulate files and directories
 import time as timeclock  # for timing parts of the calculation during debugging
 
 # for debugging
-# import sys
-# sys.path.append("../")
+import sys
+
+sys.path.append("../")
 
 # Importing our classes
 from quantumgrid.femdvr import FEM_DVR

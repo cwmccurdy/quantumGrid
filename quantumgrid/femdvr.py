@@ -244,7 +244,7 @@ class FEM_DVR(object):
         #
         for j in range(nbas):
             # Potential added on diagonal
-            H_mat[j, j] = H_mat[j, j] + V_potential(x[j + 1], time)
+            H_mat[j, j] = H_mat[j, j] + V_potential(np.real(x[j + 1]), time)
         return H_mat
 
     def Potential_Two_States(self, V_potential_1, V_potential_2, V_coupling, time):
