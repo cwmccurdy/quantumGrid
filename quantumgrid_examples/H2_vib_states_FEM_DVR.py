@@ -37,7 +37,11 @@ import matplotlib.pyplot as plt  # import matplotlib pyplot functions
 import os  # functions to manipulate files and directories
 
 # Needed to read in data files distributed in quantumgrid examples
-from pkg_resources import resource_string
+from pathlib import Path
+
+# for debugging
+# import sys
+# sys.path.append("..")
 
 # Import our module!
 from quantumgrid.femdvr import FEM_DVR
@@ -61,8 +65,8 @@ def main(want_to_plot):
     path = os.getcwd()
     print("The current working directory is %s" % path)
     # define the name of the directory to be created
+    Plot_Output = path + "/Plot_Output"
     if want_to_plot is True:
-        Plot_Output = path + "/Plot_Output"
         if os.path.exists(Plot_Output):
             print("Directory for wave function plots already exists", Plot_Output)
         else:
@@ -153,8 +157,8 @@ def main(want_to_plot):
     #  Read in files with points for potential curve in hartrees
     #  and load in arrays for interpolation
     #
-    potential_curve = resource_string(__name__, "potcurve_CISD_H2_ccpvTZ.dat")
-    perturbation = Potential(potential_curve)
+    path = Path(__file__).parent.absolute()
+    perturbation = Potential(path / "potcurve_CISD_H2_ccpvTZ.dat")
 
     n_vals_pot = perturbation.r_data.shape[0]
     #
@@ -162,45 +166,46 @@ def main(want_to_plot):
     #  Plot potential on the DVR grid points on which the wavefunction is defined
     #  and ALSO the interpolation to check we are using the potential that we mean to.
     #
-    print("\n Plot potential ")
-    x_Plot = []
-    pot_Plot = []
-    for j in range(0, n_vals_pot):
-        x_Plot.append(perturbation.r_data[j])
-        pot_Plot.append(perturbation.V_data[j])
-    plt.suptitle("V(r) interpolation", fontsize=14, fontweight="bold")
-    string = "V input points"
-    plt.plot(x_Plot, pot_Plot, "ro", label=string)
-    #
-    x_Plot = []
-    pot_Plot = []
-    Number_plot_points = 750
-    dx = (fem_dvr.x_pts[fem_dvr.nbas - 1] - fem_dvr.x_pts[0]) / float(
-        Number_plot_points - 1
-    )
-    time = 0.0  # dummy time in general call to potential function
-    for j in range(0, Number_plot_points):
-        x = fem_dvr.x_pts[0] + j * dx
-        try:
-            x >= perturbation.r_data[0] and x <= perturbation.r_data[n_vals_pot - 1]
-        except IndexError:
-            print("Number of plot points is out of range of pertubation data")
-        x_Plot.append(x)
-        pot_Plot.append(perturbation.V_Interpolated(x, time))
+    if want_to_plot is True:
+        print("\n Plot potential ")
+        x_Plot = []
+        pot_Plot = []
+        Number_plot_points = 741
+        for j in range(0, n_vals_pot):
+            x_Plot.append(perturbation.r_data[j])
+            pot_Plot.append(perturbation.V_data[j])
+        plt.suptitle("V(r) interpolation", fontsize=14, fontweight="bold")
+        string = "V input points"
+        plt.plot(x_Plot, pot_Plot, "ro", label=string)
+        #
+        x_Plot = []
+        pot_Plot = []
+        dx = (fem_dvr.x_pts[fem_dvr.nbas - 1] - fem_dvr.x_pts[0]) / float(
+            Number_plot_points - 1
+        )
+        time = 0.0  # dummy time in general call to potential function
+        for j in range(0, Number_plot_points):
+            x = fem_dvr.x_pts[0] + j * dx
+            try:
+                x >= perturbation.r_data[0] and x <= perturbation.r_data[n_vals_pot - 1]
+            except IndexError:
+                print("Number of plot points is out of range of pertubation data")
+            x_Plot.append(x)
+            pot_Plot.append(perturbation.V_Interpolated(x, time))
 
-    plt.plot(x_Plot, pot_Plot, "-b", label="Interpolation on DVR grid range")
-    plt.legend(loc="best")
-    plt.xlabel(" x ", fontsize=14)
-    plt.ylabel("V", fontsize=14)
-    print(
-        "\n Running from terminal, close figure window to proceed and make .pdf file of figure"
-    )
-    #   Insert limits if necessary
-    # xmax = float(rmax)  # CWM: need to use float() to get plt.xlim to work to set x limits
-    # plt.xlim([0,xmax])
-    # number_string = str(a)
-    plt.savefig("Plot_Output/" + "Plot_potential" + ".pdf", transparent=False)
-    plt.show()
+        plt.plot(x_Plot, pot_Plot, "-b", label="Interpolation on DVR grid range")
+        plt.legend(loc="best")
+        plt.xlabel(" x ", fontsize=14)
+        plt.ylabel("V", fontsize=14)
+        print(
+            "\n Running from terminal, close figure window to proceed and make .pdf file of figure"
+        )
+        #   Insert limits if necessary
+        # xmax = float(rmax)  # CWM: need to use float() to get plt.xlim to work to set x limits
+        # plt.xlim([0,xmax])
+        # number_string = str(a)
+        plt.savefig("Plot_Output/" + "Plot_potential" + ".pdf", transparent=False)
+        plt.show()
     #
     #
     # =============Build Hamiltonian (using general routine with dummy time t=0)=========
@@ -263,8 +268,10 @@ def main(want_to_plot):
         # ================# Plot the  wave function specified by n_Plot above======================
         #   It must be type np.complex for this general wave function plotting logic
         #
-        Cinitial = np.zeros((fem_dvr.nbas), dtype=np.complex)
-        wfcnInitialPlot = np.zeros((fem_dvr.nbas), dtype=np.complex)
+        # Cinitial = np.zeros((fem_dvr.nbas), dtype=np.complex)
+        # wfcnInitialPlot = np.zeros((fem_dvr.nbas), dtype=np.complex)
+        Cinitial = np.zeros(fem_dvr.nbas)
+        wfcnInitialPlot = np.zeros(fem_dvr.nbas)
         for j in range(0, fem_dvr.nbas):
             Cinitial[j] = wfcnPlot[j]
         #

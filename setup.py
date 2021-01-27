@@ -47,19 +47,16 @@ setup(
     long_description=readme + "\n\n" + history,
     long_description_content_type="text/x-rst",
     include_package_data=True,
-    package_data={
-        "": ["potcurve_CISD_H2_ccpvTZ.dat"],
-        "": ["potcurve_CO_CISDT_ccpvDZ.dat"],
-    },
     keywords="quantumgrid",
     name="quantumgrid",
     packages=find_packages(
         include=["quantumgrid", "femdvr.py", "potential.py", "quantumgrid_examples",]
     ),
+    package_data={"quantumgrid_examples": ["*.dat"],},
     setup_requires=setup_requirements,
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/zstreeter/quantumgrid",
-    version="2.0.001",
+    version="2.0.010",
     zip_safe=False,
 )

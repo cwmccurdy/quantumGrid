@@ -6,6 +6,7 @@ include README.rst
 include Pypi_README.rst
 
 include quantumgrid_examples *
+include quantumgrid_examples/*.dat
 
 recursive-include tests *
 recursive-exclude * __pycache__

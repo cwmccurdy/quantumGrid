@@ -23,9 +23,7 @@ import matplotlib.pyplot as plt  # for the wave function plotting function
 
 # Import  NumPy which is used to define pi, sqrt, array, .transpose etc. as
 import numpy as np
-from numpy import (
-    linalg as LA,
-)  # for linear eq solve in Crank-Nicolson propagator
+from numpy import linalg as LA  # for linear eq solve in Crank-Nicolson propagator
 
 #                           Preliminaries
 #
@@ -34,7 +32,6 @@ from sympy.integrals.quadrature import gauss_lobatto
 
 
 class FEM_DVR(object):
-
     def __init__(self, n_order, FEM_boundaries, Mass=1, Complex_scale=1, R0_scale=0.0):
         """Constructor method
         Builds 1D  FEM DVR grid and kinetic energy matrix representation in
@@ -75,6 +72,7 @@ class FEM_DVR(object):
         #
         # Complex the FEM_boundaries if Complex_scale .ne. 1
         #
+        i_elem_scale = 0.0
         if Complex_scale != 1:
             for i_elem in range(0, N_elements):
                 if FEM_boundaries[i_elem] >= R0_scale:
@@ -122,9 +120,7 @@ class FEM_DVR(object):
             x_elem = []
             w_elem = []
             for i in range(0, n_order):
-                x_elem.append(
-                    ((xmax - xmin) * x_lobatto[i] + (xmax + xmin)) / 2.0
-                )
+                x_elem.append(((xmax - xmin) * x_lobatto[i] + (xmax + xmin)) / 2.0)
                 w_elem.append((xmax - xmin) * w_lobatto[i] / 2.0)
             for i in range(0, n_order):
                 shift = i_elem * n_order
@@ -137,12 +133,10 @@ class FEM_DVR(object):
             for i in range(0, n_order):
                 for j in range(0, n_order):
                     KE_temp[
-                        i + (i_elem * (n_order - 1)),
-                        j + (i_elem * (n_order - 1)),
+                        i + (i_elem * (n_order - 1)), j + (i_elem * (n_order - 1)),
                     ] = (
                         KE_temp[
-                            i + (i_elem * (n_order - 1)),
-                            j + (i_elem * (n_order - 1)),
+                            i + (i_elem * (n_order - 1)), j + (i_elem * (n_order - 1)),
                         ]
                         + KE_elem[i, j]
                     )
@@ -253,9 +247,7 @@ class FEM_DVR(object):
             H_mat[j, j] = H_mat[j, j] + V_potential(x[j + 1], time)
         return H_mat
 
-    def Potential_Two_States(
-        self, V_potential_1, V_potential_2, V_coupling, time
-    ):
+    def Potential_Two_States(self, V_potential_1, V_potential_2, V_coupling, time):
         """
         Build potential function
 
@@ -284,12 +276,8 @@ class FEM_DVR(object):
         potential_2 = np.zeros((nbas, nbas))
 
         jj = np.arange(nbas)
-        potential_1[jj, jj] = V_potential_1(
-            x[jj + 1], time
-        )  # potential for state 1
-        potential_2[jj, jj] = V_potential_2(
-            x[jj + 1], time
-        )  # potential for state 2
+        potential_1[jj, jj] = V_potential_1(x[jj + 1], time)  # potential for state 1
+        potential_2[jj, jj] = V_potential_2(x[jj + 1], time)  # potential for state 2
         #  Load potentials into full potential matrix, vectorized logic
         #  The potentials are placed  on the diagonals and the coupling on the
         #   diagonals of the coupling blocks
@@ -301,9 +289,7 @@ class FEM_DVR(object):
         potential[kk + nbas, kk] = np.conj(V_coupling(x[kk + 1], time))
         return potential
 
-    def Hamiltonian_Two_States(
-        self, V_potential_1, V_potential_2, V_coupling, time
-    ):
+    def Hamiltonian_Two_States(self, V_potential_1, V_potential_2, V_coupling, time):
         """
         Build Hamiltonian given Kinetic energy matrix and potential function
 
@@ -398,9 +384,7 @@ class FEM_DVR(object):
             funcval = 1 / np.sqrt(w_grid[j_fcn])
             for i in range(index_left, index_left + N_order):
                 if i != j_fcn:
-                    funcval = (
-                        funcval * (x - x_grid[i]) / (x_grid[j_fcn] - x_grid[i])
-                    )
+                    funcval = funcval * (x - x_grid[i]) / (x_grid[j_fcn] - x_grid[i])
             sum_val = sum_val + Coef * funcval
         psi_value = sum_val
         return psi_value
@@ -442,11 +426,8 @@ class FEM_DVR(object):
         x_Plot = []
         # Build array of plot points on the contour in x, ECS contour if complex scaling is on
         N_pts_per_elem = np.int(N_plot_points / N_elements)
-        print("Plotting points per element = ", N_pts_per_elem)
         for i_elem in range(0, N_elements):
-            dx = (
-                FEM_boundaries[i_elem + 1] - FEM_boundaries[i_elem]
-            ) / N_pts_per_elem
+            dx = (FEM_boundaries[i_elem + 1] - FEM_boundaries[i_elem]) / N_pts_per_elem
             if i_elem == N_elements - 1:
                 dx = (FEM_boundaries[i_elem + 1] - FEM_boundaries[i_elem]) / (
                     N_pts_per_elem - 1
@@ -477,9 +458,7 @@ class FEM_DVR(object):
             print(
                 "\n Running from terminal, close figure window to proceed and make .pdf file of figure"
             )
-            plt.savefig(
-                "Plot_Output/" + plot_title_string + ".pdf", transparent=False
-            )
+            plt.savefig("Plot_Output/" + plot_title_string + ".pdf", transparent=False)
             plt.show()  # note plt.show() evidently clears everything for this plot
         return x_Plot, Psi_Plot  # returns the x, y coordinates for a graph
 
@@ -517,9 +496,7 @@ class FEM_DVR(object):
         FEM_boundaries = self.FEM_boundaries
         N_order = self.n_order
         N_elements = len(FEM_boundaries) - 1
-        dx = (FEM_boundaries[N_elements] - FEM_boundaries[0]) / (
-            N_plot_points - 1
-        )
+        dx = (FEM_boundaries[N_elements] - FEM_boundaries[0]) / (N_plot_points - 1)
         Psi1_Plot = []
         Psi2_Plot = []
         x_Plot = []
@@ -543,16 +520,10 @@ class FEM_DVR(object):
             string23 = "Abs(psi_2(t))"
             plt.plot(x_Plot, np.real(Psi1_Plot), "-r", label=string11)
             plt.plot(x_Plot, np.imag(Psi1_Plot), "-g", label=string12)
-            plt.plot(
-                x_Plot, np.real(Psi2_Plot), "-r", linestyle="--", label=string21
-            )
-            plt.plot(
-                x_Plot, np.imag(Psi2_Plot), "-g", linestyle="--", label=string22
-            )
+            plt.plot(x_Plot, np.real(Psi2_Plot), "-r", linestyle="--", label=string21)
+            plt.plot(x_Plot, np.imag(Psi2_Plot), "-g", linestyle="--", label=string22)
             plt.plot(x_Plot, np.abs(Psi1_Plot), "-k", label=string13)
-            plt.plot(
-                x_Plot, np.abs(Psi2_Plot), "-k", linestyle="--", label=string23
-            )
+            plt.plot(x_Plot, np.abs(Psi2_Plot), "-k", linestyle="--", label=string23)
             plt.legend(loc="best")
             plt.xlabel(" x ", fontsize=14)
             plt.ylabel("psi", fontsize=14)
@@ -565,9 +536,7 @@ class FEM_DVR(object):
             print(
                 "\n Running from terminal, close figure window to proceed and make .pdf file of figure"
             )
-            plt.savefig(
-                "Plot_Output/" + plot_title_string + ".pdf", transparent=False
-            )
+            plt.savefig("Plot_Output/" + plot_title_string + ".pdf", transparent=False)
             plt.show()  # note plt.show() evidently clears everything for this plot
         return (
             x_Plot,
@@ -642,9 +611,7 @@ class FEM_DVR(object):
         Mconj = Mconj - 1j * KE * Deltat / 2.0
         # vectorized logic for potential "correction" meaning diagonal part of M matrices
         i = np.arange(nbas)
-        potential_correction = (1j * Deltat / 2.0) * potential(
-            x[i + 1], t_initial
-        )
+        potential_correction = (1j * Deltat / 2.0) * potential(x[i + 1], t_initial)
         # ordinary for loop (slower) for potential correction
         # to use instead if vectorization of potential() gives errors at execution like:
         #  in _vectorize_call res = array(outputs, copy=False, subok=True, dtype=otypes[0])
@@ -781,10 +748,7 @@ class FEM_DVR(object):
                 time = itime * Deltat + t_initial
                 # build full H at time-Deltat/2, for step from t-Deltat to t
                 H_mat = self.Hamiltonian_Two_States(
-                    V_potential_1,
-                    V_potential_2,
-                    V_coupling,
-                    time - Deltat / 2.0,
+                    V_potential_1, V_potential_2, V_coupling, time - Deltat / 2.0,
                 )
                 Ct = np.zeros(2 * nbas)
                 M = 1j * H_mat * Deltat / 2.0

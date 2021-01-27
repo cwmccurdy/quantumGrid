@@ -37,7 +37,7 @@ import os  # functions to manipulate files and directories
 
 import time as timeclock  # for timing parts of the calculation during debugging
 
-# Needed to import our classes
+# for debugging
 # import sys
 # sys.path.append("../")
 

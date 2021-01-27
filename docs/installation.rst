@@ -4,67 +4,54 @@
 Installation
 ============
 
-
-Using pip
----------
-
-To install quantumGrid using pip, run this command in your terminal:
-
-.. code-block:: console
-
-    $ pip install --user quantumgrid
-
-the --user flag is so the package is installed locally and not install it on the root system, which is NOT a good idea. This is the preferred method to install packages that are in the Pypi index but the recommended way of installation is using Anaconda.
-
-If you don't have `pip`_ installed, this `Python installation guide`_ can guide
-you through the process.
-
-.. _pip: https://pip.pypa.io
-.. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
-
-Using conda
+Recommended
 -----------
 
-Before going further into conda, you should always update your conda package system:
+Before going further using conda, you should always update your conda package system:
 
 .. code-block:: console
 
     $ conda update -y conda
 
-We would rather work with conda environments but this requires a few extra steps. First we have to pull our quantumgrid package from the Pypi index and setup a conda recipe to build the package locally. To do this we first have to get the building tools using this command:
+First, we always recommend to create a conda environment for using our package. This is the general recommended procedure so there are no dependency issues and systemic issues that could break other parts of your computer. To create a conda environment named "DVRenv" run this command in your terminal:
 
 .. code-block:: console
 
-    $ conda install -y conda-build
+    $ conda create -n DVRenv
 
-Now we need to pull quantumgrid from the Pypi index and create a recipe to build our package locally for conda use:
-
-.. code-block:: console
-
-    $ conda skeleton pypi quantumgrid
-
-This will create a directory called "quantumgrid" with a .yml file with our recipe to create our package.
-
-Next we build our package:
+Now we want all the rest of the packages to only be installed into this environment so activate it before moving forward:
 
 .. code-block:: console
 
-    $ conda-build quantumgrid
+    $ conda activate DVRenv
 
-This may take a minute but once it's done, you should have a local package of quantumgrid in a bld directory (short for build) that you can then install into any conda environment you create! Here are the commands to install the quantumgrid package to a new conda environment named "qtest":
-
-.. code-block:: console
-
-    $ conda create --name qtest
-    $ conda activate qtest
-    $ conda install --use-local quantumgrid
-
-Now you should be able to use the  quantumgrid package in your qtest conda environment! You can also run the example scripts simple by executing:
+If you have Anaconda intergrated with your shell, you should see `(DVRenv)` in the front of your prompt, indicating you are now in the `DVRenv` environment. If you do not have Anaconda integrated with your shell, then run the following command and confirm you see `DVRenv` on the next line in your terminal:
 
 .. code-block:: console
 
-    $ ecs_femdvr_time_indep_h2
-    $ ecs_femdvr_time_dep_h2
+    $ echo $CONDA_DEFAULT_ENV
+    $ DVRenv
+
+Now the quantumgrid package is on the PyPI index so we need to install pip to access that index.
+
+.. code-block:: console
+
+   (DVRenv) $ conda install pip
+
+(Note that this pip will only be installed in our `DVRenv` environment!)
+
+Now we can install quantumgrid!
+
+.. code-block:: console
+
+   (DVRenv) $ pip install quantumgrid
+
+Now you should be able to use the  quantumgrid package in your `DVRenv` conda environment! You can also run the example scripts simple by executing (see example directory for more details):
+
+.. code-block:: console
+
+    (DVRenv) $ ecs_femdvr_time_indep_h2
+    (DVRenv) $ ecs_femdvr_time_indep_h2 --want_to_plot=true
 
 From sources
 ------------

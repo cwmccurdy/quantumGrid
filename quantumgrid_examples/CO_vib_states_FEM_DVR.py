@@ -41,7 +41,11 @@ import matplotlib.pyplot as plt  # import matplotlib pyplot functions
 import os  # functions to manipulate files and directories
 
 # Needed to read in data files distributed in quantumgrid examples
-from pkg_resources import resource_string
+from pathlib import Path
+
+# for debugging
+# import sys
+# sys.path.append("../")
 
 # Import our module!
 from quantumgrid.femdvr import FEM_DVR
@@ -154,13 +158,10 @@ def main(want_to_plot):
     # =================================Potential=====================================
     #  Read in files with points for potential curve in hartrees
     #  and load in arrays for interpolation
-    potential_curve = resource_string(__name__, "potcurve_CO_CISDT_ccpvDZ.dat")
-    perturbation = Potential(potential_curve)
+    path = Path(__file__).parent.absolute()
+    perturbation = Potential(path / "potcurve_CISDT_CO_ccpvDZ.dat")
 
     n_vals_pot = perturbation.r_data.shape[0]
-    print(
-        n_vals_pot, "  ", perturbation.r_data[0], perturbation.r_data[n_vals_pot - 1],
-    )
     #
 
     # ===========================================================================================
@@ -180,7 +181,7 @@ def main(want_to_plot):
         #
         x_Plot = []
         pot_Plot = []
-        Number_plot_points = 750
+        Number_plot_points = 731
         dx = (fem_dvr.x_pts[fem_dvr.nbas - 1] - fem_dvr.x_pts[0]) / float(
             Number_plot_points - 1
         )

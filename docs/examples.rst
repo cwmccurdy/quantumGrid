@@ -83,7 +83,7 @@ Shows how to
 Args:
   1) want_to_plot (bool): Optional command that turns on plotting; default is false.
 
-Potential read from file used here:
+File read for this example:
    I) potcurve_CISD_H2_ccpvTZ.dat
 
 femdvr_vib_states_co
@@ -108,8 +108,8 @@ Shows how to
 Args:
   1) want_to_plot (bool): Optional command that turns on plotting; default is false.
 
-Potential read from file used here:
-   I) potcurve_CO_CISDT_ccpvDZ.dat
+File read for this example:
+   I) potcurve_CISDT_CO_ccpvDZ.dat
 
 Modifying Scripts
 -----------------

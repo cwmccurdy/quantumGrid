@@ -37,6 +37,10 @@ from matplotlib import animation  # for animation from same class library
 import os  # functions to manipulate files and directories
 import time as timeclock  # for timing parts of the calculation during debugging
 
+# for debugging
+# import sys
+# sys.path.append("..")
+
 from quantumgrid.femdvr import FEM_DVR
 from quantumgrid.potential import Potential
 
@@ -162,7 +166,7 @@ def main(want_to_plot):
     # =============Build Hamiltonian (at t=0 if time-dependent)=================================
     #     Pass name of potential function explicitly here
     time = 0.0
-    H_mat = fem_dvr.lamiltonian(pertubation.vectorized_V_Bernstein, time)
+    H_mat = fem_dvr.Hamiltonian(pertubation.vectorized_V_Bernstein, time)
     print("\n Completed construction of Hamiltonian at t = 0")
     # ====================================================================================
     #
