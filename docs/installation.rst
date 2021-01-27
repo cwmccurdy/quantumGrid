@@ -46,7 +46,7 @@ Now we can install quantumgrid!
 
    (DVRenv) $ pip install quantumgrid
 
-Now you should be able to use the  quantumgrid package in your `DVRenv` conda environment! You can also run the example scripts simple by executing (see example directory for more details):
+Now you should be able to use the  quantumgrid package in your `DVRenv` conda environment! You can also run the example scripts simply by executing (see example directory for more details):
 
 .. code-block:: console
 
