@@ -79,7 +79,7 @@ hydroden and carbon dioxide.
 
 Documentation
 ==============
-For a more details in using quantumGrid, checkout our manual here:
+For more details in using quantumGrid, checkout our manual here:
 https://quantumgrid.readthedocs.io.
 
 Contributors ✨
