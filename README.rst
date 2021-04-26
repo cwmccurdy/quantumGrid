@@ -13,7 +13,7 @@
 brought to you by the AMO theory group at Berkeley National Lab
 
 Note:
-  The image above is for a scattered wave on a 2D FEM-DVR grid and created using POV-Ray. An 2D example is included with this package but uses Python for plotting
+  The image above is for a scattered wave on a 2D FEM-DVR grid and created using POV-Ray. A 2D example is included with this package but uses Python for plotting
 
 
 .. image:: https://img.shields.io/pypi/v/quantumgrid.svg
