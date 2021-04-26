@@ -247,6 +247,44 @@ class FEM_DVR(object):
             H_mat[j, j] = H_mat[j, j] + V_potential(np.real(x[j + 1]), time)
         return H_mat
 
+    def Hamiltonian_2D(self, H_mat_1D, V_coupling_mat, time):
+        """
+          1) Build 2D Hamiltonian from H_mat_1D matrix (nbas by nbas) and the coupling, V_coupling
+             The two dimensions are equivalent with the same grid and same 1D (one-body) Hamiltonian
+          2) Add coupling potential (two-body potential) to diagonal --
+             specified by V_coupling(r1,r1,t), function passed in as argument.
+
+        Args:
+            H_mat_1D (ndarray): One-electron Hamiltonian (nbas by nbas)
+            V_coupling_mat (function): Coupling potential
+            time (int): Time dependence of the Hamiltonian. This argument is
+                passed to the potential to simulate turning on a field pertubation,
+                for example
+
+        Returns:
+            H_mat_2D (ndarray): Two-electron Hamiltonian
+        """
+        nbas = self.nbas
+        x = self.x_pts
+        # Create 2D Hamiltonian matrix, and initialize with zeros
+        H_mat_2D = np.zeros((nbas*nbas, nbas*nbas),dtype=np.complex)
+        # loops on two dimensions
+        for i in range(nbas):
+            for j in range(nbas):
+                I2D = i + (j)*nbas # 0 <= I2D <= nbas^2 -1
+                for k in range(nbas):
+                    for l in range(nbas):
+                        J2D = k + (l)*nbas
+                        val = 0.0
+                        if(i == k):
+                           val = val + H_mat_1D[j,l]
+                        if(j == l):
+                           val = val + H_mat_1D[i,k]
+                        if(i == k and j == l):
+                           val = val + V_coupling_mat[i,j]
+                        H_mat_2D[I2D,J2D] = val
+        return H_mat_2D
+
     def Potential_Two_States(self, V_potential_1, V_potential_2, V_coupling, time):
         """
         Build potential function
@@ -389,6 +427,101 @@ class FEM_DVR(object):
         psi_value = sum_val
         return psi_value
 
+    def psi_evaluate_2D(self, x, y, coef_vector):
+        """
+        def psi_evaluate_2D(self, x, y,  coef_vector):
+
+	   Evaluate a 2D function represented by a vector of
+	   coefficients of the FEM-DVR basis functions at the point
+	   x, y.  Array containing vector of coefficients does not
+	   contain coefficients for the beginning and end of the
+	   FEM-DVR grid in either dimension where boundary conditions
+	   enforce wavefunction =  zero.
+
+           Order of coefficients in coef_vector is i2d = i + (j-1)*nbas
+           labels the (i,j) grid point x_i, y_j
+           where nbas = number of DVR functions in one dimension.  Grids
+           in the x and y dimensions are the same.
+
+        Args:
+            x (complex): FEM-DVR grid point of evalutation of :math:`\Psi`
+            y (complex): FEM-DVR grid point of evalutation of :math:`\Psi`
+            coef_vector (ndarray): Function representation in the FEM-DVR basis
+
+        Returns:
+            psi_value (complex): The value of :math:`\Psi(x)` at the point x, y
+
+        """
+        #  get the FEM-DVR grid points, weights and FEM boundaries
+        x_grid = self.x_pts
+        w_grid = self.w_pts
+        FEM_boundaries = self.FEM_boundaries
+        N_order = self.n_order
+        #
+        #  find which finite element x is in (or on the boundary of)
+        #
+        N_elements = len(FEM_boundaries) - 1
+        i_elem = -1
+        for i in range(0, N_elements):
+            if (np.real(x) >= np.real(FEM_boundaries[i]) and np.real(x) <= np.real(FEM_boundaries[i + 1]) +1.e-9):
+                i_elem = i + 1
+        if (i_elem < 0):
+            print(' x value ',x,' is out of range ',FEM_boundaries[0],
+            ', ',FEM_boundaries[N_elements],' in psi_evaluate_2D()')
+            exit()
+        #
+        #  find which finite element y is in (or on the boundary of)
+        #
+        N_elements = len(FEM_boundaries) - 1
+        j_elem = -1
+        for i in range(0, N_elements):
+            if (np.real(y) >= np.real(FEM_boundaries[i]) and np.real(y) <= np.real(FEM_boundaries[i + 1]) +1.e-9):
+                j_elem = i + 1
+        if (j_elem < 0):
+            print(' y value ',y,' is out of range ',FEM_boundaries[0],
+            ', ',FEM_boundaries[N_elements],' in psi_evaluate_2D()')
+            exit()
+        #
+        #  x is in i_elem and y is in j_elem
+        #
+        # elements are numbered 1 through N_elements
+        # beginning and ending indices in x_grid and w_grid of this element
+        i_index_left = (i_elem - 1) * N_order - (i_elem - 1)
+        j_index_left = (j_elem - 1) * N_order - (j_elem - 1)
+        #  Below: loop on lobatto shape functions in these intervals including endpoints
+        #  evaluate each shape function at x
+        #  evaluate each shape function at y
+        #  multiply by coefficient to accumulate
+        #  sum over all contributions.
+        sum_val = 0.0
+        for i_fcn in range(i_index_left, i_index_left + N_order):
+            x_funcval = 1 / np.sqrt(w_grid[i_fcn])
+            for i in range(i_index_left, i_index_left + N_order):
+                if (i != i_fcn):
+                    x_funcval = x_funcval * (x - x_grid[i]) / (x_grid[i_fcn] - x_grid[i])
+            # x_funcval has x fcn
+            for j_fcn in range(j_index_left, j_index_left + N_order):
+            # find the coefficient of this pair of basis functions
+            # i_fcn and j_fcn range from 0 to nabs + 1. There are nbas + 2 grid points in
+            # the full grid that contains the two endpoints where the wave function is zero
+            # in each dimension
+                if (i_fcn == 0 or i_fcn == len(x_grid) - 1):
+                     Coef = 0.0  # psi is assumed to be zero on the endpoints of the grid
+                elif (j_fcn == 0 or j_fcn == len(x_grid) - 1):
+                     Coef = 0.0  # psi is assumed to be zero on the endpoints of the grid
+                else:
+                     Coef = coef_vector[i_fcn + (j_fcn - 1)*self.nbas - 1] # here i_fcn and j_fcn are 1 to nbas
+             #
+                y_funcval = 1 / np.sqrt(w_grid[j_fcn])
+                for j in range(j_index_left, j_index_left + N_order):
+                    if (j != j_fcn):
+                        y_funcval = y_funcval * (y - x_grid[j]) / (x_grid[j_fcn] - x_grid[j])
+            # y_funcval has y fcn
+                sum_val = sum_val +x_funcval*y_funcval*Coef
+            #
+        psi_value = sum_val
+        return psi_value
+
     def Plot_Psi(
         self,
         Psi_coefficients,
@@ -461,6 +594,100 @@ class FEM_DVR(object):
             plt.savefig("Plot_Output/" + plot_title_string + ".pdf", transparent=False)
             plt.show()  # note plt.show() evidently clears everything for this plot
         return x_Plot, Psi_Plot  # returns the x, y coordinates for a graph
+
+    def Plot_Psi_2D (self, Psi_coefficients, plot_title_string="Plot of FEM-DVR representation",N_plot_points=50,make_plot=True):
+        """
+
+        Quick generic plot of function in represented by FEM DVR coefficients on 2D grid
+
+        Args:
+            Psi_coefficients (ndarray): Array of type 'double' or 'complex'
+                coefficients for the representation of :math:`\Psi` on the FEM-DVR grid
+            plot_title_string (string): Title of plot, defaults to "Plot of
+                FEM-DVR representation"
+            N_plot_points (int): Number of points to plot, default 500
+            make_plot (bool): Boolean that turns off/on this plotting feature,
+                default true
+
+        Returns:
+            x_Plot, y_Plot, Psi_plot (ndarray, ndarrya): x, y, and Psi values (Real parts)
+
+        """
+        x_grid = self.x_pts
+        w_grid = self.w_pts
+        FEM_boundaries = self.FEM_boundaries
+        N_order = self.n_order
+        N_elements = len(FEM_boundaries) - 1
+        x_Plot = []  #  x points for grid ~ N_plot_points
+        y_Plot = []  #  y points for grid ~ N_plot_points
+        Psi_Plot = [] # all Psi plotting values ~ N_plot_points**2
+        # Build array of plot points on the ECS contour in x
+        N_pts_per_elem = np.int(N_plot_points/N_elements)
+        #print("Plotting points per element = ",N_pts_per_elem) # DEBUG
+        for i_elem in range(0,N_elements):
+             dx = (FEM_boundaries[i_elem +1] - FEM_boundaries[i_elem])/N_pts_per_elem
+             if(i_elem == N_elements -1):
+                dx = (FEM_boundaries[i_elem +1] - FEM_boundaries[i_elem])/(N_pts_per_elem-1)
+             for k_pt in range(0,N_pts_per_elem):
+                 xval = FEM_boundaries[i_elem] + k_pt*dx
+                 x_Plot.append(xval)
+        # Build array of plot points on the ECS contour in y
+        for j_elem in range(0,N_elements):
+             dy = (FEM_boundaries[j_elem +1] - FEM_boundaries[j_elem])/N_pts_per_elem
+             if(j_elem == N_elements -1):
+                dy = (FEM_boundaries[j_elem +1] - FEM_boundaries[j_elem])/(N_pts_per_elem-1)
+             for l_pt in range(0,N_pts_per_elem):
+                 yval = FEM_boundaries[j_elem] + l_pt*dy
+                 y_Plot.append(yval)
+        #  Points in x and y are calculated, now caculate Psi at these points
+        plot_len = len(x_Plot)
+        if (plot_len != len(y_Plot)):
+           print("Error in constructing plotting grid in 2D ", plotlen," ",len(y_Plot)," should be equal")
+           exit()
+        for i in range(plot_len):
+           x = x_Plot[i]
+           for j in range(plot_len):
+               y = y_Plot[j]
+               psival =  self.psi_evaluate_2D( x, y, Psi_coefficients)
+               Psi_Plot.append(psival)
+        # Matplotlib plot
+        if (make_plot):
+            # make the 2D arrays for plot_surface() matplotlib routine
+            x_list = np.empty((plot_len,plot_len))
+            y_list = np.empty((plot_len,plot_len))
+            Psi_list = np.empty((plot_len,plot_len))
+            ijpt = 0
+            for i in range(plot_len):
+                for j in range(plot_len):
+                    x_list[i,j] = np.real( x_Plot[i] )
+                    y_list[i,j] = np.real( y_Plot[j] )
+                    Psi_list[i,j] = np.real( Psi_Plot[ijpt] ) # plot real part of Psi
+                    ijpt = ijpt + 1
+            # make the plot
+            fig = plt.figure()
+            ax = plt.axes(projection='3d')
+            fig.suptitle(plot_title_string )
+            ax.set_xlabel(" Re(r1) ")
+            ax.set_ylabel(" Re(r2) ")
+            ax.set_zlabel(" Re(Psi) ")
+            # initial viewpoint
+            ax.view_init(elev=30., azim=-45.)
+            #
+            #  Options for default 3D surface plot
+            # alpha controls transparency
+            # color =  one of {'b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'}
+            # or color map from standard list cmap=plt.get_cmap('YlOrRd')
+            #ax.plot_surface(x_list, y_list, Psi_list, cmap='binary',linewidth=0.2 )  # Good B&W
+            #
+            ax.plot_surface(x_list, y_list, Psi_list, rstride=1, cstride=1,
+                               antialiased=False, alpha=0.5, cmap='viridis')
+            # contours on the base of the plot
+            cset = ax.contourf(x_list, y_list, Psi_list, zdir='z', offset=np.min(Psi_list), cmap='viridis')
+            print("\n When running from terminal, close figure window to proceed and make .pdf file of figure")
+            plt.savefig('Plot_Output_2D/' + plot_title_string + '.pdf', transparent=False)
+            plt.show()
+            plt.show()  # note plt.show() evidently clears everything for this plot
+        return x_Plot, y_Plot, Psi_Plot  # returns the x, y coordinates for a graph
 
     def Plot_Psi_Two_States(
         self,

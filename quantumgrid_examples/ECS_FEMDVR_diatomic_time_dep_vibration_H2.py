@@ -4,7 +4,7 @@
     Uses femdvr.py and potential class.
 
     Finite Element Method - Discrete Variable Representation (FEM-DVR)
-    for 1D Schroedinger equation using Gauss-Lobatto quadrature in
+    for 1D Schrödinger equation using Gauss-Lobatto quadrature in
     each finite element Uses class FEM_DVR(args) to construct FEM-DVR
     points, weights and Kinetic Energy
 
@@ -38,9 +38,9 @@ import os  # functions to manipulate files and directories
 import time as timeclock  # for timing parts of the calculation during debugging
 
 # for debugging
-import sys
+# import sys
 
-sys.path.append("../")
+# sys.path.append("../")
 
 # Importing our classes
 from quantumgrid.femdvr import FEM_DVR
@@ -51,21 +51,17 @@ import click
 
 
 @click.option(
-    "--want_to_plot",
+    "--want_to_plot_animate",
     type=click.BOOL,
     default="False",
-    help="Set to True if you want to turn on plotting",
-)
-@click.option(
-    "--want_to_animate",
-    type=click.BOOL,
-    default="False",
-    help="Set to True if you want to turn on animation",
+    help="Set to True if you want to turn on plotting and animation",
 )
 @click.argument("time_step", type=click.FLOAT, default=0.1, required=False)
-@click.argument("number_of_time_intervals", type=click.INT, default=300, required=False)
+@click.argument(
+    "number_of_time_intervals", type=click.INT, default=300, required=False
+)
 @click.command()
-def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
+def main(number_of_time_intervals, time_step, want_to_plot_animate):
     #
     # ================ Make Directory for Plots if it's not there already =============
     #
@@ -75,12 +71,15 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
     # define the name of the directory to be created
     Plot_Output = path + "/Plot_Output"
 
-    if want_to_plot is True:
+    if want_to_plot_animate is True:
         if os.path.exists(Plot_Output):
-            print("Directory for wave function plots already exists", Plot_Output)
+            print(
+                "Directory for wave function plots already exists", Plot_Output
+            )
         else:
             print(
-                "Attempting to create directory for wave function plots ", Plot_Output,
+                "Attempting to create directory for wave function plots ",
+                Plot_Output,
             )
             try:
                 os.mkdir(Plot_Output)
@@ -132,7 +131,11 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
     scale_factor = np.exp(1j * 20.0 * np.pi / 180.0)
     R0 = 10.0  # potential must be analytic for R >= R0
     fem_dvr = FEM_DVR(
-        n_order, FEM_boundaries, Mass=mu, Complex_scale=scale_factor, R0_scale=R0,
+        n_order,
+        FEM_boundaries,
+        Mass=mu,
+        Complex_scale=scale_factor,
+        R0_scale=R0,
     )
     print("\nFEM-DVR basis of ", fem_dvr.nbas, " functions")
 
@@ -145,10 +148,14 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
     pot_Plot = []
     for j in range(0, fem_dvr.nbas):
         x_Plot.append(np.real(fem_dvr.x_pts[j + 1]))
-        pot_Plot.append(np.real(pertubation.V_Bernstein(fem_dvr.x_pts[j + 1], time)))
+        pot_Plot.append(
+            np.real(pertubation.V_Bernstein(fem_dvr.x_pts[j + 1], time))
+        )
 
-    if want_to_plot is True:
-        plt.suptitle("V(x) at DVR basis function nodes", fontsize=14, fontweight="bold")
+    if want_to_plot_animate is True:
+        plt.suptitle(
+            "V(x) at DVR basis function nodes", fontsize=14, fontweight="bold"
+        )
         string = "V"
         plt.plot(x_Plot, pot_Plot, "ro", label=string)
         plt.plot(x_Plot, pot_Plot, "-b")
@@ -164,7 +171,9 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
         ymax = float(0.05)
         plt.ylim([-0.18, ymax])
         # save plot to .pdf file
-        plt.savefig("Plot_Output/" + "Plot_potential" + ".pdf", transparent=False)
+        plt.savefig(
+            "Plot_Output/" + "Plot_potential" + ".pdf", transparent=False
+        )
         plt.show()
     #
     # =============Build Hamiltonian (at t=0 if time-dependent)=================================
@@ -192,7 +201,10 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
     for i in range(0, n_energy):
         print("E( ", i, ") =   ", EigenVals[0, i], " hartrees")
         print(
-            np.real(EigenVals[0, i]), "  ", np.imag(EigenVals[0, i]), file=file_opened,
+            np.real(EigenVals[0, i]),
+            "  ",
+            np.imag(EigenVals[0, i]),
+            file=file_opened,
         )
     # ====================================================================================
     #
@@ -201,7 +213,9 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
     # pick one of the bound states of Morse Potential to plot
     # numbering can depend on numpy and python installation that determines
     # behavior of the linear algebra routines.
-    n_Plot = n_energy - 1  # This is generally the highest energy continuum eigenvalue
+    n_Plot = (
+        n_energy - 1
+    )  # This is generally the highest energy continuum eigenvalue
     n_Plot = 426
     wfcnPlot = []
     for j in range(0, fem_dvr.nbas):
@@ -228,12 +242,16 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
             free_wave = (2.0 * np.sqrt(mu / k_momentum)) * np.sin(
                 k_momentum * fem_dvr.x_pts[j + 1]
             )
-            gamma_residue = gamma_residue + wfcnPlot[j] * pertubation.V_Bernstein(
+            gamma_residue = gamma_residue + wfcnPlot[
+                j
+            ] * pertubation.V_Bernstein(
                 fem_dvr.x_pts[j + 1], time
-            ) * free_wave * np.sqrt(fem_dvr.w_pts[j + 1])
+            ) * free_wave * np.sqrt(
+                fem_dvr.w_pts[j + 1]
+            )
     print("Complex symmetric inner product (psi|psi) is being used")
 
-    if want_to_plot is True:
+    if want_to_plot_animate is True:
         print(
             "Norm of wave function from int psi^2 on contour being plotted is ",
             np.sqrt(norm_squared),
@@ -241,7 +259,10 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
 
     print(" For this state the asymptotic value of k = ", k_momentum)
     print(
-        "gamma from int = ", gamma_residue, " |gamma|^2 = ", np.abs(gamma_residue) ** 2,
+        "gamma from int = ",
+        gamma_residue,
+        " |gamma|^2 = ",
+        np.abs(gamma_residue) ** 2,
     )
     # Plot wave function -- It must be type np.complex
     Cinitial = np.zeros((fem_dvr.nbas), dtype=np.complex)
@@ -249,7 +270,7 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
     for j in range(0, fem_dvr.nbas):
         Cinitial[j] = wfcnPlot[j]
 
-    if want_to_plot is True:
+    if want_to_plot_animate is True:
         #
         # plot n_Plot'th eigenfunction
         #
@@ -347,7 +368,7 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
         " intervals",
     )
 
-    if want_to_plot is True:
+    if want_to_plot_animate is True:
         #
         # plot initial wave packet
         #
@@ -355,7 +376,10 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
         number_string = str(0.0)
         title = "Wavefunction at t = " + number_string
         x_Plot_array, Psi_plot_array = fem_dvr.Plot_Psi(
-            Cinitial, plot_title_string=title, N_plot_points=1250, make_plot=True,
+            Cinitial,
+            plot_title_string=title,
+            N_plot_points=1250,
+            make_plot=True,
         )
         times_array.append(tinitial)
         x_Plot_time_array.append(x_Plot_array)
@@ -421,10 +445,11 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
             # should be change to real part of contour.
             norm_final = norm_final + np.abs(Ctfinal[j]) ** 2
         print(
-            "Norm of final wave function on real part of ECS contour", norm_final,
+            "Norm of final wave function on real part of ECS contour",
+            norm_final,
         )
 
-        if want_to_plot is True:
+        if want_to_plot_animate is True:
             #
             # Plot of packet at end of each interval using Plot_Psi from DVR()
             #
@@ -438,7 +463,10 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
             number_string = str(t_finish)
             title = "Wavefunction at t = " + number_string
             x_Plot_array, Psi_plot_array = fem_dvr.Plot_Psi(
-                Ctfinal, plot_title_string=title, N_plot_points=1250, make_plot=False,
+                Ctfinal,
+                plot_title_string=title,
+                N_plot_points=1250,
+                make_plot=False,
             )
             times_array.append(t_finish)
             x_Plot_time_array.append(x_Plot_array)
@@ -448,7 +476,7 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
         for i in range(0, fem_dvr.nbas):
             Cinitial[i] = Ctfinal[i]
     #
-    if want_to_plot is True:
+    if want_to_plot_animate is True:
         x_Plot_array, Psi_plot_array = fem_dvr.Plot_Psi(
             Ctfinal, plot_title_string=title, N_plot_points=1250, make_plot=True
         )
@@ -467,7 +495,9 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
         time_text.set_text("")
         ax.set_xlabel(" x (bohr) ", fontsize=16, fontweight="bold")
         ax.set_ylabel(" Psi(t): Re, Im & Abs ", fontsize=16, fontweight="bold")
-        fig.suptitle("Wave Packet in H2 Potential", fontsize=16, fontweight="bold")
+        fig.suptitle(
+            "Wave Packet in H2 Potential", fontsize=16, fontweight="bold"
+        )
         # put in a line at the value Phi = 0
         ax.plot([x_Plot[0], x_Plot[len(x_Plot) - 1]], [0, 0], "k")
         return line, time_text
@@ -482,7 +512,9 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
         #  wouldn't recompute everything at each frame, which is very slow...
         #
         # ==============================================================================
-        time_string = str(times_array[i] * 24.189 / 1000.0)  # string for a plot label
+        time_string = str(
+            times_array[i] * 24.189 / 1000.0
+        )  # string for a plot label
         re_array = np.real(Psi_plot_time_array[i])
         im_array = np.imag(Psi_plot_time_array[i])
         abs_array = np.abs(Psi_plot_time_array[i])
@@ -492,7 +524,7 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
         time_text.set_text("time = " + time_string + " fs")
         return (line1, line2, line3, time_text)
 
-    if want_to_animate is True:
+    if want_to_plot_animate is True:
         # ==============================================================================
         #  Now plot the animation
         # ==============================================================================
@@ -530,13 +562,11 @@ def main(number_of_time_intervals, time_step, want_to_plot, want_to_animate):
         plt.show()
         print("done")
 
-    if want_to_plot is False:
+    if want_to_plot_animate is False:
         print(
-            "\n\nSet the command line option want_to_plot=True to see figures and create plotting directory.\n\n"
+            "\n\nSet the command line option want_to_plot_animate=True to see figures,"
+            " animation, and create plotting directory.\n\n"
         )
-
-    if want_to_animate is False:
-        print("Set the command line option want_to_animate=True to see animation.\n\n")
 
 
 if __name__ == "__main__":
