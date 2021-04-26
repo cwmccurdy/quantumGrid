@@ -5,7 +5,7 @@
               for particle with specified mass
 
  Finite Element Method - Discrete Variable Representation (FEM-DVR)
- for 1D Schroedinger equation using Gauss-Lobatto quadrature in each finite element
+ for 1D Schrödinger equation using Gauss-Lobatto quadrature in each finite element
  Uses class DVRHelper() to construct FEM-DVR points, weights and Kinetic Energy
 
  Shows how to
@@ -68,10 +68,13 @@ def main(want_to_plot):
     Plot_Output = path + "/Plot_Output"
     if want_to_plot is True:
         if os.path.exists(Plot_Output):
-            print("Directory for wave function plots already exists", Plot_Output)
+            print(
+                "Directory for wave function plots already exists", Plot_Output
+            )
         else:
             print(
-                "Attempting to create directory for wave function plots ", Plot_Output
+                "Attempting to create directory for wave function plots ",
+                Plot_Output,
             )
             try:
                 os.mkdir(Plot_Output)
@@ -90,7 +93,10 @@ def main(want_to_plot):
     if os.path.exists(Data_Output):
         print("Directory for output .dat files  already exists", Plot_Output)
     else:
-        print("Attempting to create directory for .dat output files  ", Plot_Output)
+        print(
+            "Attempting to create directory for .dat output files  ",
+            Plot_Output,
+        )
         try:
             os.mkdir(Data_Output)
         except OSError:
@@ -187,13 +193,19 @@ def main(want_to_plot):
         for j in range(0, Number_plot_points):
             x = np.real(fem_dvr.x_pts[0]) + j * dx
             try:
-                x >= perturbation.r_data[0] and x <= perturbation.r_data[n_vals_pot - 1]
+                x >= perturbation.r_data[0] and x <= perturbation.r_data[
+                    n_vals_pot - 1
+                ]
             except IndexError:
-                print("Number of plot points is out of range of pertubation data")
+                print(
+                    "Number of plot points is out of range of pertubation data"
+                )
             x_Plot.append(x)
             pot_Plot.append(perturbation.V_Interpolated(x, time))
 
-        plt.plot(x_Plot, pot_Plot, "-b", label="Interpolation on DVR grid range")
+        plt.plot(
+            x_Plot, pot_Plot, "-b", label="Interpolation on DVR grid range"
+        )
         plt.legend(loc="best")
         plt.xlabel(" x ", fontsize=14)
         plt.ylabel("V", fontsize=14)
@@ -204,7 +216,9 @@ def main(want_to_plot):
         # xmax = float(rmax)  # CWM: need to use float() to get plt.xlim to work to set x limits
         # plt.xlim([0,xmax])
         # number_string = str(a)
-        plt.savefig("Plot_Output/" + "Plot_potential" + ".pdf", transparent=False)
+        plt.savefig(
+            "Plot_Output/" + "Plot_potential" + ".pdf", transparent=False
+        )
         plt.show()
     #
     #
@@ -240,16 +254,16 @@ def main(want_to_plot):
         number_of_eigenvectors = 20
         #
         #  Here n_Plot picks which eigenfunction to plot
-        n_Plot = (
-            10  # pick a state of this potential to plot < number_of_eigenvectors -1
-        )
+        n_Plot = 10  # pick a state of this potential to plot < number_of_eigenvectors -1
         #
         print(
             "Calculating ",
             number_of_eigenvectors,
             " eigenvectors for plotting eigenfunctions",
         )
-        EigenVals, EigenVecs = LA.eigh(H_mat, eigvals=(0, number_of_eigenvectors))
+        EigenVals, EigenVecs = LA.eigh(
+            H_mat, eigvals=(0, number_of_eigenvectors)
+        )
         wfcnPlot = []
         for j in range(0, fem_dvr.nbas):
             wfcnPlot.append(np.real(EigenVecs[j, n_Plot]))
@@ -310,7 +324,9 @@ def main(want_to_plot):
             #   compute <r> for this wave function
             #   note that Cinitial[i] contains the necessary weight, sqrt(dvr.w_pts[i+1])
             raverage = raverage + Cinitial[i] ** 2 * fem_dvr.x_pts[i + 1]
-        print("\n Average value of r using DVR for the integral, <r> = ", raverage)
+        print(
+            "\n Average value of r using DVR for the integral, <r> = ", raverage
+        )
         title = "Wavefunction" + str(n_Plot) + "^2"
         #  note that the dvr.Plot_Psi function makes a .pdf file in the Plot_Output directory
         #  That's what make_plot=True controls.

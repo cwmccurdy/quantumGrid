@@ -22,6 +22,8 @@ class Potential(object):
             vectorized_V_c_state (ndarray): Vectorized version of the c-state interpolated function of the cStateDCalc.csv file, which is NOT provided in the released package
             vectorized_V_Interpolated (ndarray): Vectorized version of the
             interpolated function.
+            vectorized_V_Coulomb (ndarray): Vectorized version of the Coulomb
+            function
 
         Todo:
             Add a general interpolation scheme so any file passed into this
@@ -31,15 +33,20 @@ class Potential(object):
 
         """
 
-        self.vectorized_V_morse = np.vectorize(self.V_morse)
+        self.vectorized_V_morse_centrifugal = np.vectorize(
+            self.V_morse_centrifugal
+        )
+        self.vectorized_V_morse_1 = np.vectorize(self.V_morse_1)
+        self.vectorized_V_morse_2 = np.vectorize(self.V_morse_2)
         self.vectorized_V_Bernstein = np.vectorize(self.V_Bernstein)
         self.vectorized_V_ = np.vectorize(self.V_Bernstein)
         self.vectorized_V_c_state = np.vectorize(self.V_c_state)
         self.vectorized_V_Interpolated = np.vectorize(self.V_Interpolated)
+        self.vectorized_V_Coulomb = np.vectorize(self.V_Coulomb)
 
         if file is None:
             print(
-                "Potential constructed without a file. Can only use analytic potential functions defined in the quantumgrid.potential class"
+                "\nPotential constructed without a file. Can only use analytic potential functions defined in the quantumgrid.potential class"
             )
         else:
             file_name = open(file, "r")
@@ -61,7 +68,76 @@ class Potential(object):
 
             self.V_vals = CubicSpline(self.r_data, self.V_data)
 
-    def V_morse(self, r, t=0.0):
+    def V_morse_1(self, r: complex, time: int = 0.0) -> complex:
+        """
+        Morse Potential defined by
+
+        .. math::
+
+            V = d*(y^2 - 2*y)
+
+        with :math:`y` defined by
+
+        .. math::
+
+            y = e^{(-a*(r-re))}
+
+        This potential also defines parameters specifically for :math:`H_2`, De = 4.75 eV
+
+        Args:
+            r (complex): FEM-DVR point where this potential is evaluated at
+            t (int): Time dependence of this potential to simulate
+                        turning on a field pertubation, for example. Defaults to
+                        t=0.0
+
+        Returns:
+            pot (complex): potential value at the point r at the time t
+        """
+        a = 1.0277
+        re = 1.4022
+        d = 0.1746
+        #  potential
+        y = np.exp(-a * (r - re))
+        term = y ** 2 - 2.0 * y
+        pot = d * term
+        return pot
+
+    def V_morse_2(self, r: complex, time: int = 0.0) -> complex:
+        """
+        Morse Potential defined by
+
+        .. math::
+
+            V = d*(y^2 - 2*y)
+
+        with :math:`y` defined by
+
+        .. math::
+
+            y = e^{(-a*(r-re))}
+
+        This potential also defines parameters specifically for :math:`H_2`
+
+        Args:
+            r (complex): FEM-DVR point where this potential is evaluated at
+            t (int): Time dependence of this potential to simulate
+                        turning on a field pertubation, for example. Defaults to
+                        t=0.0
+
+        Returns:
+            pot (complex): potential value at the point r at the time t
+        """
+        a = 1.0277
+        re = 2.0
+        d = 1.2 * 0.1746
+        Eshift = 0.15
+        #  potential
+        y = np.exp(-a * (r - re))
+        term = y ** 2 - 2.0 * y
+        pot = d * term + Eshift
+        return pot
+
+    def V_morse_centrifugal(self, r: complex, time: int = 0.0) -> complex:
         """
         Morse Potential defined by
 
@@ -95,10 +171,12 @@ class Potential(object):
         y = np.exp(-a * (r - re))
         # j value for centrifugal potential.  mu defined in main part of script above
         j = 0  # Morse potential has rotational predissociation resonances for some j
-        pot = d * (y ** 2 - 2.0 * y) + np.float(j * (j + 1)) / (2.0 * mu * r ** 2)
+        pot = d * (y ** 2 - 2.0 * y) + np.float(j * (j + 1)) / (
+            2.0 * mu * r ** 2
+        )
         return pot
 
-    def V_Bernstein(self, r, t=0.0):
+    def V_Bernstein(self, r: complex, time: int = 0.0) -> complex:
         """
         :math:`H_2` potential from T-G. Wiechand R.B. Bernstein, J. Chem. Phys. 46 (1967) 4905.
         This is an accurate fit to the accurate Kolos and Wolneiwicz potential curve
@@ -112,7 +190,7 @@ class Potential(object):
 
         Args:
             r (complex): FEM-DVR point where this potential is evaluated at
-            t (int): Time dependence of this potential to simulate
+            time (int): Time dependence of this potential to simulate
                         turning on a field pertubation, for example. Defaults to
                         t=0.0
 
@@ -177,7 +255,7 @@ class Potential(object):
         vpot = vsum + float(j * (j + 1)) / (2.0 * mu * r ** 2)
         return vpot
 
-    def V_c_state(self, r, t=0.0):
+    def V_c_state(self, r: complex, time: int = 0.0) -> complex:
         """
         Interpolate computed values using scipy CubicSpline
         :math:`\\frac{1}{R^4}` tail added matching value and finite diff
@@ -193,7 +271,7 @@ class Potential(object):
 
         Args:
             r (complex): FEM-DVR point where this potential is evaluated at
-            t (int): Time dependence of this potential to simulate
+            time (int): Time dependence of this potential to simulate
                         turning on a field pertubation, for example. Defaults to
                         t=0.0
 
@@ -217,7 +295,7 @@ class Potential(object):
         potential = (pot - 20.26002003285) / Hartree_to_eV
         return potential
 
-    def V_Interpolated(self, r, time):
+    def V_Interpolated(self, r: complex, time: int) -> complex:
         """
         Interpolated values using scipy CubicSpline
 
@@ -234,3 +312,42 @@ class Potential(object):
             pot (complex): potential value at the point r at the time t
         """
         return self.V_vals(r)
+
+    def V_colinear_model(self, r1: complex, r2: complex) -> complex:
+        """
+        Colinear model for two-electron atom
+
+        Args:
+            r1 (complex): FEM-DVR first point where this potential is evaluated at
+            r2 (complex): FEM-DVR second point where this potential is evaluated at
+
+        Returns:
+            pot (complex): potential value at the point r1 and r2
+        """
+        potval = 1.0 / (r1 + r2)
+        return potval
+
+    #
+    def V_Coulomb(self, r: complex, time: int = 0.0) -> complex:
+        """
+        Coulomb potential for He or H- one-electron Hamiltonian
+
+        Note:
+           Nuclear charge is set to 2.0
+
+        Args:
+            r (complex): FEM-DVR point where this potential is evaluated at
+            Znuc (double): Charge on the residual ion
+            t (int): Time dependence of this potential to simulate
+                        turning on a field pertubation, for example. Defaults to
+                        t=0.0
+
+        Returns:
+            pot (complex): potential value on the Coulomb tail
+        """
+        # nuclear charge should be passed in but this would mean can't vectorize
+        # this function, which doesn't really do anything anyways
+        Znuc = 2.0
+
+        pot = -Znuc / r
+        return pot

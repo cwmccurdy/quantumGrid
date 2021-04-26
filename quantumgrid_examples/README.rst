@@ -22,6 +22,10 @@ There are two examples that read in the files potcurve_CO_CISDT_ccpvDZ.dat
 and potcurve_CISD_H2_ccpvTZ.dat for finding the vibrational states of CO
 and H_2, respectively.
 
+Finally there is a 2-electron example using a 2D Hamiltonian and there
+is an example showing the excitation of a vibrational state from one
+potential curve to another by a 3 femtosecond UV pulse.
+
 Plotting output from all four examples is written in ./Plot_Output
 while .dat files are written in this directory.  Spectrum.dat
 contains the eigenvalues of the ECS scaled Hamiltonian.

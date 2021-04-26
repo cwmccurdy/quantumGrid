@@ -3,7 +3,7 @@
     Uses femdvr.py class and potential class.
 
     Finite Element Method - Discrete Variable Representation (FEM-DVR)
-    for 1D Schroedinger equation using Gauss-Lobatto quadrature in
+    for 1D Schrödinger equation using Gauss-Lobatto quadrature in
     each finite element Uses class DVRHelper() to construct FEM-DVR
     points, weights and Kinetic Energy
 
@@ -67,10 +67,13 @@ def main(want_to_plot):
 
     if want_to_plot == True:
         if os.path.exists(Plot_Output):
-            print("Directory for wave function plots already exists", Plot_Output)
+            print(
+                "Directory for wave function plots already exists", Plot_Output
+            )
         else:
             print(
-                "Attempting to create directory for wave function plots ", Plot_Output,
+                "Attempting to create directory for wave function plots ",
+                Plot_Output,
             )
             try:
                 os.mkdir(Plot_Output)
@@ -122,7 +125,11 @@ def main(want_to_plot):
     scale_factor = np.exp(1j * 37.0 * np.pi / 180.0)
     R0 = 22.75
     fem_dvr = FEM_DVR(
-        n_order, FEM_boundaries, Mass=mu, Complex_scale=scale_factor, R0_scale=R0,
+        n_order,
+        FEM_boundaries,
+        Mass=mu,
+        Complex_scale=scale_factor,
+        R0_scale=R0,
     )
     print("\nFEM-DVR basis of ", fem_dvr.nbas, " functions")
     #
@@ -141,10 +148,14 @@ def main(want_to_plot):
     pot_Plot = []
     for j in range(0, fem_dvr.nbas):
         x_Plot.append(np.real(fem_dvr.x_pts[j + 1]))
-        pot_Plot.append(np.real(pertubation.V_Bernstein(fem_dvr.x_pts[j + 1], time)))
+        pot_Plot.append(
+            np.real(pertubation.V_Bernstein(fem_dvr.x_pts[j + 1], time))
+        )
 
     if want_to_plot is True:
-        plt.suptitle("V(x) at DVR basis function nodes", fontsize=14, fontweight="bold")
+        plt.suptitle(
+            "V(x) at DVR basis function nodes", fontsize=14, fontweight="bold"
+        )
         string = "V"
         plt.plot(x_Plot, pot_Plot, "ro", label=string)
         plt.plot(x_Plot, pot_Plot, "-b")
@@ -160,7 +171,9 @@ def main(want_to_plot):
         ymax = float(0.05)
         plt.ylim([-0.18, ymax])
         # save plot to .pdf file
-        plt.savefig("Plot_Output/" + "Plot_potential" + ".pdf", transparent=False)
+        plt.savefig(
+            "Plot_Output/" + "Plot_potential" + ".pdf", transparent=False
+        )
         plt.show()
     #
     # =============Build Hamiltonian (at t=0 if time-dependent)=================================
@@ -188,7 +201,10 @@ def main(want_to_plot):
     for i in range(0, n_energy):
         print("E( ", i, ") =   ", EigenVals[0, i], " hartrees")
         print(
-            np.real(EigenVals[0, i]), "  ", np.imag(EigenVals[0, i]), file=file_opened,
+            np.real(EigenVals[0, i]),
+            "  ",
+            np.imag(EigenVals[0, i]),
+            file=file_opened,
         )
     # ====================================================================================
     #
@@ -197,7 +213,9 @@ def main(want_to_plot):
     # pick one of the bound states of Morse Potential to plot
     # numbering can depend on numpy and python installation that determines
     # behavior of the linear algebra routines.
-    n_Plot = n_energy - 1  # This is generally the highest energy continuum eigenvalue
+    n_Plot = (
+        n_energy - 1
+    )  # This is generally the highest energy continuum eigenvalue
     n_Plot = 292
     wfcnPlot = []
     for j in range(0, fem_dvr.nbas):
@@ -224,9 +242,13 @@ def main(want_to_plot):
             free_wave = (2.0 * np.sqrt(mu / k_momentum)) * np.sin(
                 k_momentum * fem_dvr.x_pts[j + 1]
             )
-            gamma_residue = gamma_residue + wfcnPlot[j] * pertubation.V_Bernstein(
+            gamma_residue = gamma_residue + wfcnPlot[
+                j
+            ] * pertubation.V_Bernstein(
                 fem_dvr.x_pts[j + 1], time
-            ) * free_wave * np.sqrt(fem_dvr.w_pts[j + 1])
+            ) * free_wave * np.sqrt(
+                fem_dvr.w_pts[j + 1]
+            )
     print("Complex symmetric inner product (psi|psi) is being used")
     if want_to_plot is True:
         print(
@@ -235,7 +257,10 @@ def main(want_to_plot):
         )
     print(" For this state the asymptotic value of k = ", k_momentum)
     print(
-        "gamma from int = ", gamma_residue, " |gamma|^2 = ", np.abs(gamma_residue) ** 2,
+        "gamma from int = ",
+        gamma_residue,
+        " |gamma|^2 = ",
+        np.abs(gamma_residue) ** 2,
     )
     # Plot wave function -- It must be type np.complex
     Cinitial = np.zeros((fem_dvr.nbas), dtype=np.complex)
@@ -310,7 +335,9 @@ def main(want_to_plot):
 
     if want_to_plot is True:
         print(
-            "Calculating ", fem_dvr.nbas, " eigenvectors for plotting eigenfunctions",
+            "Calculating ",
+            fem_dvr.nbas,
+            " eigenvectors for plotting eigenfunctions",
         )
     EigenVals2, EigenVecs = LA.eig(H_mat, right=True, homogeneous_eigvals=True)
     wfcnPlot = []
