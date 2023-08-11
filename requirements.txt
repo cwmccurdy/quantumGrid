@@ -11,5 +11,5 @@ python-dateutil==2.8.1
 scipy==1.6.3
 six==1.15.0
 sympy==1.8
-tornado==6.1
+tornado==6.3.3
 sphinxcontrib-bibtex
